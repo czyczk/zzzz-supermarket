@@ -5,6 +5,9 @@ import com.zzzz.model.User
 import org.apache.ibatis.annotations.Param
 import org.springframework.dao.DuplicateKeyException
 
+/**
+ * User DAO
+ */
 interface UserDao {
     /**
      * Query a user by an ID

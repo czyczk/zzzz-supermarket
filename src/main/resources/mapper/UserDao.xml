@@ -8,7 +8,7 @@
                username,
                password,
                type
-        FROM user
+        FROM User
         WHERE user_id = #{_parameter}
     </select>
 
@@ -17,7 +17,7 @@
                username,
                password,
                type
-        FROM user
+        FROM User
         WHERE username = #{_parameter}
     </select>
 
@@ -26,17 +26,17 @@
                username,
                password,
                type
-        FROM user
+        FROM User
         WHERE type = #{_parameter}
     </select>
 
     <insert id="insert">
-        INSERT IGNORE INTO user(username, password, type)
+        INSERT IGNORE INTO User(username, password, type)
         VALUE (#{username}, #{password}, #{type})
     </insert>
 
     <update id="update">
-        UPDATE user
+        UPDATE User
         <set>
             <if test="username != null and !username.trim().equals(&quot;&quot;)">
                 username = #{username},
