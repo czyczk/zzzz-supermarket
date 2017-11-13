@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzzz.dao.ProductDao">
+    <insert id="insert">
+        INSERT IGNORE INTO Product(
+            barcode,
+            name,
+            price,
+            shelf_life,
+            is_refundable
+        )
+        VALUE(
+            #{barcode},
+            #{name},
+            #{price},
+            #{shelfLife},
+            #{isRefundable}
+        )
+    </insert>
+
+    <update id="update">
+        UPDATE Product
+        <set>
+            <if test="barcode != null and !barcode.trim().equals(&quot;&quot;)">
+                `barcode` = #{barcode},
+            </if>
+            <if test="name != null and !name.trim().equals(&quot;&quot;)">
+                `name` = #{name},
+            </if>
+            <if test="price != null">
+                `price` = #{price},
+            </if>
+            <if test="shelfLife != null">
+                `shelf_life` = #{shelfLife},
+            </if>
+            <if test="isRefundable != null">
+                `is_refundable` = #{isRefundable},
+            </if>
+        </set>
+        WHERE barcode = #{targetBarcode}
+    </update>
+
+    <select id="queryByBarcode" resultType="Product">
+        SELECT barcode, name, price, shelf_life, is_refundable as refundable
+        FROM Product
+        WHERE barcode = #{_parameter}
+    </select>
+
+    <select id="queryWithConstraints" resultType="Product">
+        SELECT barcode, name, price, shelf_life, is_refundable as refundable
+        FROM Product
+        <where>
+            <if test="barcode != null and !barcode.trim().equals(&quot;&quot;)">
+                AND `barcode` = #{barcode}
+            </if>
+            <if test="nameContaining != null and !nameContaining.trim().equals(&quot;&quot;)">
+                AND `name` LIKE '%' #{nameContaining} '%'
+            </if>
+            <if test="minPrice != null">
+                AND `price` > #{minPrice}
+            </if>
+            <if test="maxPrice != null">
+                AND `price` &lt; #{maxPrice}
+            </if>
+            <if test="minShelfLife != null">
+                AND `shelf_life` > #{minShelfLife}
+            </if>
+            <if test="maxShelfLife != null">
+                AND `shelf_life` &lt; #{maxShelfLife}
+            </if>
+            <if test="isRefundable != null">
+                AND `is_refundable` = #{isRefundable}
+            </if>
+        </where>
+    </select>
+
+    <delete id="delete">
+        DELETE FROM Product
+        WHERE barcode = #{barcode}
+    </delete>
+</mapper>
