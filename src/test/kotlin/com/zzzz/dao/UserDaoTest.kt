@@ -4,6 +4,7 @@ import com.zzzz.enum.UserTypeEnum
 import com.zzzz.model.User
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DuplicateKeyException
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -71,5 +72,19 @@ class UserDaoTest : DaoUnitTestBase() {
 
         val rAffected = userDao.insert(conflictingUsername, password, type)
         assertEquals(0, rAffected)
+    }
+
+    /**
+     * update (Update a user with a username already present)
+     */
+    @Test(expected = DuplicateKeyException::class)
+    fun testUpdateUsernameConflict() {
+        val conflictingUsername = "root"
+
+        val id = 2L
+        val password = "whatever"
+        val type = UserTypeEnum.ADMINISTRATOR
+
+        userDao.update(id, conflictingUsername, password, type)
     }
 }

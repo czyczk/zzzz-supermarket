@@ -14,4 +14,9 @@ interface UserDao {
     fun insert(@Param("username") username: String,
                @Param("password") password: String,
                @Param("type") type: UserTypeEnum): Int
+
+    fun update(@Param("id") id: Long,
+               @Param("username") username: String?,
+               @Param("password") password: String?,
+               @Param("type") type: UserTypeEnum?): Int
 }

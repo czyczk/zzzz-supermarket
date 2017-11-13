@@ -34,4 +34,20 @@
         INSERT IGNORE INTO user(username, password, type)
         VALUE (#{username}, #{password}, #{type})
     </insert>
+
+    <update id="update">
+        UPDATE user
+        <set>
+            <if test="username != null and !username.trim().equals(&quot;&quot;)">
+                username = #{username},
+            </if>
+            <if test="password != null and !password.trim().equals(&quot;&quot;)">
+                password = #{password},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+        </set>
+        WHERE user_id = #{id}
+    </update>
 </mapper>
