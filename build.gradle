@@ -1,0 +1,77 @@
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext.kotlin_version = '1.1.51'
+    ext.spring_version = '5.0.1.RELEASE'
+
+    repositories {
+        // mavenCentral()
+        maven {
+            name 'Aliyun Repo'
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'war'
+apply plugin: "kotlin-spring"
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+buildscript {
+    dependencies {
+        // https://kotlinlang.org/docs/reference/compiler-plugins.html#kotlin-spring-compiler-plugin
+        classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
+    }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    // Logging
+    compile 'org.slf4j:slf4j-api:1.7.25'
+    compile 'ch.qos.logback:logback-core:1.2.3'
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+
+    // Database connection
+    compile 'mysql:mysql-connector-java:6.0.6'
+    compile 'com.mchange:c3p0:0.9.5.2'
+
+    // DAO
+    compile 'org.mybatis:mybatis:3.4.5'
+    compile 'org.mybatis:mybatis-spring:1.3.1'
+
+    // Servlet web
+    compile 'org.apache.taglibs:taglibs-standard-impl:1.2.5'
+    compile 'javax.servlet:jstl:1.2'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.2'
+    providedCompile 'javax.servlet:javax.servlet-api:4.0.0'
+
+    // Spring
+    compile "org.springframework:spring-core:$spring_version"
+    compile "org.springframework:spring-context:$spring_version"
+    compile "org.springframework:spring-beans:$spring_version"
+    compile "org.springframework:spring-jdbc:$spring_version"
+    compile "org.springframework:spring-tx:$spring_version"
+    compile "org.springframework:spring-web:$spring_version"
+    compile "org.springframework:spring-webmvc:$spring_version"
+    compile "org.springframework:spring-test:$spring_version"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}

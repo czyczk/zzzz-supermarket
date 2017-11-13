@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/zzzz-supermarket.iml" filepath="$PROJECT_DIR$/.idea/modules/zzzz-supermarket.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/zzzz-supermarket_main.iml" filepath="$PROJECT_DIR$/.idea/modules/zzzz-supermarket_main.iml" group="zzzz-supermarket" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/zzzz-supermarket_test.iml" filepath="$PROJECT_DIR$/.idea/modules/zzzz-supermarket_test.iml" group="zzzz-supermarket" />
+    </modules>
+  </component>
+</project>
