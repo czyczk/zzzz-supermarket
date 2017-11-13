@@ -18,6 +18,7 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.51" />
+          <element id="library" level="project" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.1.51" />
           <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.25" />
           <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.2.3" />
           <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
@@ -45,7 +46,6 @@
           <element id="library" level="project" name="Gradle: org.springframework:spring-aop:5.0.1.RELEASE" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.1.RELEASE" />
           <element id="library" level="project" name="Gradle: org.jetbrains:annotations:13.0" />
-          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.1.51/222365b4b684bfe35a7676c5ff69b4b414e398fa/kotlin-reflect-1.1.51.jar" />
         </element>
       </element>
     </root>

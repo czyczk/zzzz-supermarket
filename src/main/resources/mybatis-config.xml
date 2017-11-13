@@ -7,4 +7,7 @@
         <setting name="useGeneratedKeys" value="true" />
         <setting name="mapUnderscoreToCamelCase" value="true" />
     </settings>
+    <!--<typeHandlers>-->
+        <!--<typeHandler handler="com.zzzz.enum.UserTypeEnumTypeHandler" />-->
+    <!--</typeHandlers>-->
 </configuration>

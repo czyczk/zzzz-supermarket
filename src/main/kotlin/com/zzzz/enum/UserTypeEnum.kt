@@ -1,4 +1,4 @@
-package enum
+package com.zzzz.enum
 
 enum class UserTypeEnum(val index: Int, val displayName: String) {
     ADMINISTRATOR(0, "Administrator"),
@@ -7,13 +7,13 @@ enum class UserTypeEnum(val index: Int, val displayName: String) {
 
     companion object {
         @JvmStatic
-        fun enumOf(index: Int): UserTypeEnum? {
+        fun fromIndex(index: Int): UserTypeEnum? {
             return values().firstOrNull { it.index == index }
         }
 
         @JvmStatic
-        fun enumOf(displayName: String): UserTypeEnum? {
-            return values().firstOrNull { it.displayName == displayName }
+        fun fromDisplayName(displayName: String): UserTypeEnum? {
+            return values().firstOrNull { it.displayName.equals(displayName, true) }
         }
     }
 }
