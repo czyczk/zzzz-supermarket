@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zzzz.dao.InventoryDao">
     <insert id="insert">
-        INSERT INTO Inventory(barcode, production_date, manufacturer)
+        INSERT IGNORE INTO Inventory(barcode, production_date, manufacturer)
         VALUE(#{barcode}, #{productionDate}, #{manufacturer}, #{qtyInStock}, #{qtyOnShelf})
     </insert>
 
