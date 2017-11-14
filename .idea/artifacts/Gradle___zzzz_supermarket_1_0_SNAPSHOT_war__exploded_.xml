@@ -17,8 +17,6 @@
           <element id="dir-copy" path="$PROJECT_DIR$/out/production/resources" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.51" />
-          <element id="library" level="project" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.1.51" />
           <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.25" />
           <element id="library" level="project" name="Gradle: ch.qos.logback:logback-core:1.2.3" />
           <element id="library" level="project" name="Gradle: ch.qos.logback:logback-classic:1.2.3" />
@@ -37,8 +35,6 @@
           <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.0.1.RELEASE" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:5.0.1.RELEASE" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-test:5.0.1.RELEASE" />
-          <element id="library" level="project" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.1.51" />
-          <element id="library" level="project" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.51" />
           <element id="library" level="project" name="Gradle: com.mchange:mchange-commons-java:0.2.11" />
           <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.9.0" />
           <element id="library" level="project" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.2" />
@@ -46,6 +42,10 @@
           <element id="library" level="project" name="Gradle: org.springframework:spring-aop:5.0.1.RELEASE" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.0.1.RELEASE" />
           <element id="library" level="project" name="Gradle: org.jetbrains:annotations:13.0" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jre8/1.1.60/9690932bceff9116dba0094dece6d24ba9e52596/kotlin-stdlib-jre8-1.1.60.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.1.60/af5cabae2d352850b076213f358dc2150b14a812/kotlin-reflect-1.1.60.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.1.60/ac63d0e86e690fe4eded7f1f8998996c28499989/kotlin-stdlib-1.1.60.jar" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jre7/1.1.60/51aaa4c2a3dab2054bc1554d29632cc5510bdb4f/kotlin-stdlib-jre7-1.1.60.jar" />
         </element>
       </element>
     </root>
