@@ -35,7 +35,7 @@ class User {
     }
 
     override fun toString(): String {
-        return "User[id=$id,username=$username,password=$password,type=$type]"
+        return "User(id=$id,username=$username,password=$password,type=$type)"
     }
 }
 

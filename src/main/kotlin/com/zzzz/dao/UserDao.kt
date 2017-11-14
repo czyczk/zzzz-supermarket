@@ -50,7 +50,7 @@ interface UserDao {
      * @throws DuplicateKeyException Thrown when meeting a username conflict
      */
     @Throws(DuplicateKeyException::class)
-    fun update(@Param("id") id: Long,
+    fun update(@Param("targetId") targetId: Long,
                @Param("username") username: String?,
                @Param("password") password: String?,
                @Param("type") type: UserTypeEnum?): Int

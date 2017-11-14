@@ -48,6 +48,6 @@
                 type = #{type},
             </if>
         </set>
-        WHERE user_id = #{id}
+        WHERE user_id = #{targetId}
     </update>
 </mapper>

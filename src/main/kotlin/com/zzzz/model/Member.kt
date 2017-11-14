@@ -34,6 +34,6 @@ class Member {
     }
 
     override fun toString(): String {
-        return "M(id=$id, name='$name', phoneNumber='$phoneNumber', address='$address')"
+        return "Member(id=$id, name='$name', phoneNumber='$phoneNumber', address='$address')"
     }
 }
