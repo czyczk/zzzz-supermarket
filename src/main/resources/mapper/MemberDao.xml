@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzzz.dao.MemberDao">
+    <insert id="insert">
+        INSERT IGNORE INTO Member(member_id, name, phone_number, address)
+        VALUE(#{id}, #{name}, #{phoneNumber}, #{address})
+    </insert>
+
+    <update id="update">
+        UPDATE Member
+        <set>
+            <if test="name != null and !name.trim().equals(&quot;&quot;)">
+                `name` = #{name},
+            </if>
+            <if test="phoneNumber != null and !phoneNumber.trim().equals(&quot;&quot;)">
+                `phone_number` = #{phoneNumber},
+            </if>
+            <if test="address != null and !address.trim().equals(&quot;&quot;)">
+                `address` = #{address},
+            </if>
+        </set>
+        WHERE `member_id` = #{id}
+    </update>
+
+    <select id="queryById" resultType="Member">
+        SELECT member_id, name, phone_number, address
+        FROM Member
+        WHERE member_id = #{_parameter}
+    </select>
+
+    <delete id="delete">
+        DELETE FROM Member
+        WHERE member_id = #{_parameter}
+    </delete>
+</mapper>
