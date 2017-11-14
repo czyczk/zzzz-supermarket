@@ -39,4 +39,16 @@ class ProductDaoTest : DaoUnitTestBase() {
         val p = productDao.queryWithConstraints(barcode, name)
         println(p)
     }
+
+    @Test
+    fun testInsertPkConflict() {
+        val barcode = 6903244675147L
+        val name = "心相印茶语 丝享 390张"
+        val price = BigDecimal(3)
+        val shelfLife = 25920
+        val isRefundable = true
+
+        val rAffected = productDao.insert(barcode, name, price, shelfLife, isRefundable)
+        assertEquals(0, rAffected)
+    }
 }
