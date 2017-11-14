@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzzz.dao.InventoryDao">
+    <insert id="insert">
+        INSERT INTO Inventory(barcode, production_date, manufacturer)
+        VALUE(#{barcode}, #{productionDate}, #{manufacturer}, #{qtyInStock}, #{qtyOnShelf})
+    </insert>
+
+    <update id="update">
+        UPDATE Inventory
+        <set>
+            <if test="manufacturer != null and !manufacturer.trim().equals(&quot;&quot;)">
+                `manufacturer` = #{manufacturer},
+            </if>
+            <if test="qtyInStock != null">
+                `qty_in_stock` = #{qtyInStock},
+            </if>
+            <if test="qtyOnShelf != null">
+                `qty_on_shelf` = #{qtyOnShelf},
+            </if>
+        </set>
+        WHERE `barcode` = #{targetBarcode}
+              AND `production_date` = #{targetProductionDate}
+    </update>
+
+    <select id="queryByBarcodeAndProductionDate" resultType="Inventory">
+        SELECT barcode, production_date, manufacturer, qty_in_stock, qty_on_shelf
+        FROM Inventory
+        WHERE barcode = #{barcode}
+              AND production_date = #{productionDate}
+    </select>
+
+    <select id="queryWithConstraints" resultType="Inventory">
+        SELECT barcode, production_date, manufacturer, qty_in_stock, qty_on_shelf
+        FROM Inventory
+        <where>
+            <if test="barcode != null">
+                AND `barcode` = #{barcode}
+            </if>
+            <if test="minProductionDate != null">
+                AND `production_date` > #{minProductionDate}
+            </if>
+            <if test="maxProductionDate != null">
+                AND `production_date` &lt; #{maxProductionDate}
+            </if>
+            <if test="manufacturerContaining != null and !manufacturerContaining.trim().equals(&quot;&quot;)">
+                AND `manufacturer` LIKE '%' #{manufacturerContaining} '%'
+            </if>
+            <if test="minQtyInStock != null">
+                AND `qty_in_stock` > #{minQtyInStock}
+            </if>
+            <if test="maxQtyInStock != null">
+                AND `qty_in_stock` &lt; #{maxQtyInStock}
+            </if>
+            <if test="minQtyOnShelf != null">
+                AND `qty_on_shelf` > #{minQtyOnShelf}
+            </if>
+            <if test="maxQtyOnShelf != null">
+                AND `qty_on_shelf` &lt; #{maxQtyOnShelf}
+            </if>
+        </where>
+    </select>
+
+    <delete id="delete">
+        DELETE FROM Inventory
+        WHERE barcode = #{barcode} AND production_date = #{productionDate}
+    </delete>
+</mapper>
