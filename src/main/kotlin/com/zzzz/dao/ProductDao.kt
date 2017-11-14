@@ -22,13 +22,13 @@ interface ProductDao {
 
     fun queryByBarcode(barcode: Long): Product?
 
-    fun queryWithConstraints(@Param("barcode") barcode: Long?,
-                             @Param("nameContaining") nameContaining: String?,
-                             @Param("minPrice") minPrice: BigDecimal?,
-                             @Param("maxPrice") maxPrice: BigDecimal?,
-                             @Param("minShelfLife") minShelfLife: BigDecimal?,
-                             @Param("maxShelfLife") maxShelfLife: BigDecimal?,
-                             @Param("isRefundable") isRefundable: Boolean?): List<Product>
+    fun queryWithConstraints(@Param("barcode") barcode: Long? = null,
+                             @Param("nameContaining") nameContaining: String? = null,
+                             @Param("minPrice") minPrice: BigDecimal? = null,
+                             @Param("maxPrice") maxPrice: BigDecimal? = null,
+                             @Param("minShelfLife") minShelfLife: BigDecimal? = null,
+                             @Param("maxShelfLife") maxShelfLife: BigDecimal? = null,
+                             @Param("isRefundable") isRefundable: Boolean? = null): List<Product>
 
     fun delete(@Param("barcode") barcode: Long): Int
 }

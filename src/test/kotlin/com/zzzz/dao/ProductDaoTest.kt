@@ -31,4 +31,12 @@ class ProductDaoTest : DaoUnitTestBase() {
         assertEquals(shelfLife, p.shelfLife)
         assertEquals(isRefundable, p.isRefundable)
     }
+
+    @Test
+    fun testQueryWithConstraintsBarcodeAndName() {
+        val barcode = 6903244675147L
+        val name = "丝享"
+        val p = productDao.queryWithConstraints(barcode, name)
+        println(p)
+    }
 }

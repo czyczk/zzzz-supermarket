@@ -52,7 +52,7 @@
         SELECT barcode, name, price, shelf_life, is_refundable as refundable
         FROM Product
         <where>
-            <if test="barcode != null and !barcode.trim().equals(&quot;&quot;)">
+            <if test="barcode != null">
                 AND `barcode` = #{barcode}
             </if>
             <if test="nameContaining != null and !nameContaining.trim().equals(&quot;&quot;)">
