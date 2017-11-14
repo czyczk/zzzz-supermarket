@@ -21,7 +21,7 @@
                 `address` = #{address},
             </if>
         </set>
-        WHERE `member_id` = #{id}
+        WHERE `member_id` = #{targetId}
     </update>
 
     <select id="queryById" resultType="Member">
