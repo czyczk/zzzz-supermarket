@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzzz.dao.InvoiceInventoryDao">
+    <insert id="insertInventoryList">
+        <foreach collection="inventoryList" item="it">
+            INSERT IGNORE INTO `invoice-inventory`(invoice_id, barcode, production_date)
+            VALUE(#{invoiceId}, #{it.barcode}, #{it.productionDate})
+        </foreach>
+    </insert>
+
+    <select id="queryByPk" resultType="InvoiceInventoryHelper">
+        SELECT invoice_id,
+            barcode 'inventory.barcode',
+            production_date 'inventory.production_date',
+            manufacturer 'inventory.manufacturer',
+            qty_in_stock 'inventory.qty_in_stock',
+            qty_on_shelf 'inventory.qty_on_shelf'
+        FROM `invoice-inventory` JOIN inventory USING(barcode, production_date)
+        WHERE invoice_id = #{invoiceId}
+              AND barcode = #{barcode}
+              AND production_date = #{productionDate}
+    </select>
+
+    <select id="queryById" resultType="InvoiceInventoryHelper">
+        SELECT invoice_id,
+            barcode 'inventory.barcode',
+            production_date 'inventory.production_date',
+            manufacturer 'inventory.manufacturer',
+            qty_in_stock 'inventory.qty_in_stock',
+            qty_on_shelf 'inventory.qty_on_shelf'
+        FROM `invoice-inventory` JOIN inventory USING(barcode, production_date)
+        WHERE invoice_id = #{_parameter}
+    </select>
+</mapper>
