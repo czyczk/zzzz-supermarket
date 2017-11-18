@@ -59,16 +59,16 @@
                 AND `name` LIKE '%' #{nameContaining} '%'
             </if>
             <if test="minPrice != null">
-                AND `price` > #{minPrice}
+                AND `price` >= #{minPrice}
             </if>
             <if test="maxPrice != null">
-                AND `price` &lt; #{maxPrice}
+                AND `price` &lt;= #{maxPrice}
             </if>
             <if test="minShelfLife != null">
-                AND `shelf_life` > #{minShelfLife}
+                AND `shelf_life` >= #{minShelfLife}
             </if>
             <if test="maxShelfLife != null">
-                AND `shelf_life` &lt; #{maxShelfLife}
+                AND `shelf_life` &lt;= #{maxShelfLife}
             </if>
             <if test="isRefundable != null">
                 AND `is_refundable` = #{isRefundable}
