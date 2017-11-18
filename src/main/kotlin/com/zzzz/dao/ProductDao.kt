@@ -26,8 +26,8 @@ interface ProductDao {
                              @Param("nameContaining") nameContaining: String? = null,
                              @Param("minPrice") minPrice: BigDecimal? = null,
                              @Param("maxPrice") maxPrice: BigDecimal? = null,
-                             @Param("minShelfLife") minShelfLife: BigDecimal? = null,
-                             @Param("maxShelfLife") maxShelfLife: BigDecimal? = null,
+                             @Param("minShelfLife") minShelfLife: Int? = null,
+                             @Param("maxShelfLife") maxShelfLife: Int? = null,
                              @Param("isRefundable") isRefundable: Boolean? = null): List<Product>
 
     fun delete(@Param("barcode") barcode: Long): Int
