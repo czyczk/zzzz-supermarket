@@ -10,6 +10,7 @@ import java.math.BigDecimal
 
 @Service
 class ProductServiceImpl : ProductService {
+    @Suppress("SpringKotlinAutowiring")
     @Autowired
     private lateinit var productDao: ProductDao
 
