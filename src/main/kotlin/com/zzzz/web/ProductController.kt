@@ -18,7 +18,7 @@ class ProductController {
             method = arrayOf(RequestMethod.GET),
             produces = arrayOf("application/json;charset=UTF-8"))
     @ResponseBody
-    fun detail(@PathVariable("barcode") barcode: Long): ExecutionResult<Product> {
+    fun detail(@PathVariable barcode: Long): ExecutionResult<Product> {
         val result: ExecutionResult<Product>
         result = try {
             val product = productService.getProductByBarcode(barcode)
@@ -38,13 +38,13 @@ class ProductController {
             method = arrayOf(RequestMethod.GET),
             produces = arrayOf("application/json;charset=UTF-8"))
     @ResponseBody
-    fun list(@RequestParam("barcode", required = false) barcode: Long?,
-             @RequestParam("nameContaining", required = false) nameContaining: String?,
-             @RequestParam("minPrice", required = false) minPrice: BigDecimal?,
-             @RequestParam("maxPrice", required = false) maxPrice: BigDecimal?,
-             @RequestParam("minShelfLife", required = false) minShelfLife: Int?,
-             @RequestParam("maxShelfLife", required = false) maxShelfLife: Int?,
-             @RequestParam("isRefundable", required = false) isRefundable: Boolean?
+    fun list(@RequestParam(required = false) barcode: Long?,
+             @RequestParam(required = false) nameContaining: String?,
+             @RequestParam(required = false) minPrice: BigDecimal?,
+             @RequestParam(required = false) maxPrice: BigDecimal?,
+             @RequestParam(required = false) minShelfLife: Int?,
+             @RequestParam(required = false) maxShelfLife: Int?,
+             @RequestParam(required = false) isRefundable: Boolean?
     ): ExecutionResult<List<Product>> {
         val result: ExecutionResult<List<Product>>
         result = try {
