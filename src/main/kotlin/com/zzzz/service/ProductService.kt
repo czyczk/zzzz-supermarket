@@ -1,16 +1,17 @@
 package com.zzzz.service
 
 import com.zzzz.model.Product
+import java.math.BigDecimal
 
 interface ProductService {
-    fun getProductByBarcode(barcode: String): Product?
+    fun getProductByBarcode(barcode: Long): Product?
 
     fun getProductsWithConstraints(
-            barcode: String,
-            nameContaining: String,
-            minPrice: String,
-            maxPrice: String,
-            minShelfLife: String,
-            maxShelfLife: String,
-            isRefundable: String): List<Product>
+            barcode: Long?,
+            nameContaining: String?,
+            minPrice: BigDecimal?,
+            maxPrice: BigDecimal?,
+            minShelfLife: Int?,
+            maxShelfLife: Int?,
+            isRefundable: Boolean?): List<Product>
 }

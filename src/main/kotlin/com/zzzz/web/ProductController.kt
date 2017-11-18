@@ -6,6 +6,7 @@ import com.zzzz.service.ProductService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
+import java.math.BigDecimal
 
 @Controller
 @RequestMapping("/api/v1/product")
@@ -17,7 +18,7 @@ class ProductController {
             method = arrayOf(RequestMethod.GET),
             produces = arrayOf("application/json;charset=UTF-8"))
     @ResponseBody
-    fun detail(@PathVariable("barcode") barcode: String): ExecutionResult<Product> {
+    fun detail(@PathVariable("barcode") barcode: Long): ExecutionResult<Product> {
         val result: ExecutionResult<Product>
         result = try {
             val product = productService.getProductByBarcode(barcode)
@@ -37,13 +38,13 @@ class ProductController {
             method = arrayOf(RequestMethod.GET),
             produces = arrayOf("application/json;charset=UTF-8"))
     @ResponseBody
-    fun list(@RequestParam("barcode") barcode: String,
-             @RequestParam("nameContaining") nameContaining: String,
-             @RequestParam("minPrice") minPrice: String,
-             @RequestParam("maxPrice") maxPrice: String,
-             @RequestParam("minShelfLife") minShelfLife: String,
-             @RequestParam("maxShelfLife") maxShelfLife: String,
-             @RequestParam("isRefundable") isRefundable: String
+    fun list(@RequestParam("barcode", required = false) barcode: Long?,
+             @RequestParam("nameContaining", required = false) nameContaining: String?,
+             @RequestParam("minPrice", required = false) minPrice: BigDecimal?,
+             @RequestParam("maxPrice", required = false) maxPrice: BigDecimal?,
+             @RequestParam("minShelfLife", required = false) minShelfLife: Int?,
+             @RequestParam("maxShelfLife", required = false) maxShelfLife: Int?,
+             @RequestParam("isRefundable", required = false) isRefundable: Boolean?
     ): ExecutionResult<List<Product>> {
         val result: ExecutionResult<List<Product>>
         result = try {
