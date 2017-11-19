@@ -15,6 +15,10 @@ class ExecutionResult <T> {
         this.error = exception.message
     }
 
+    constructor(isSuccess: Boolean) {
+        this.isSuccess = isSuccess
+    }
+
     constructor(isSuccess: Boolean, str: String) {
         this.isSuccess = isSuccess
         if (isSuccess)

@@ -1,6 +1,9 @@
 package com.zzzz.service.impl
 
 import com.zzzz.dao.ProductDao
+import com.zzzz.exception.InsertionFailedException
+import com.zzzz.exception.NoItemFoundException
+import com.zzzz.exception.UpdateFailedException
 import com.zzzz.model.Product
 import com.zzzz.service.ProductService
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,15 +16,37 @@ class ProductServiceImpl : ProductService {
     @Autowired
     private lateinit var productDao: ProductDao
 
-    @Throws(NumberFormatException::class, IllegalArgumentException::class)
-    override fun getProductByBarcode(barcode: Long): Product? {
-        // Access the DAO
-        @Suppress("UnnecessaryVariable")
-        val result = productDao.queryByBarcode(barcode)
-        return result
+    override fun insert(
+            barcode: Long,
+            name: String,
+            price: BigDecimal,
+            shelfLife: Int,
+            isRefundable: Boolean
+    ) {
+        val rowsAffected = productDao.insert(barcode, name, price, shelfLife, isRefundable)
+        if (rowsAffected == 0)
+            throw InsertionFailedException()
     }
 
-    @Throws(NumberFormatException::class)
+    override fun update(
+            targetBarcode: Long,
+            barcode: Long?,
+            name: String?,
+            price: BigDecimal?,
+            shelfLife: Int?,
+            isRefundable: Boolean?) {
+        val rowsAffected = productDao.update(targetBarcode, barcode, name, price, shelfLife, isRefundable)
+        if (rowsAffected == 0)
+            throw UpdateFailedException()
+    }
+
+    override fun getProductByPk(barcode: Long): Product {
+        // Access the DAO
+        @Suppress("UnnecessaryVariable")
+        val result = productDao.queryByPk(barcode)
+        return result?: throw NoItemFoundException()
+    }
+
     override fun getProductsWithConstraints(
             barcode: Long?,
             nameContaining: String?,

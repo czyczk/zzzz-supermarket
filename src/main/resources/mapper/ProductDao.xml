@@ -42,7 +42,7 @@
         WHERE barcode = #{targetBarcode}
     </update>
 
-    <select id="queryByBarcode" resultType="Product">
+    <select id="queryByPk" resultType="Product">
         SELECT barcode, name, price, shelf_life, is_refundable as refundable
         FROM Product
         WHERE barcode = #{_parameter}

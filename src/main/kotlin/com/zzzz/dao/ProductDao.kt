@@ -20,7 +20,7 @@ interface ProductDao {
                @Param("shelfLife") shelfLife: Int?,
                @Param("isRefundable") isRefundable: Boolean?): Int
 
-    fun queryByBarcode(barcode: Long): Product?
+    fun queryByPk(barcode: Long): Product?
 
     fun queryWithConstraints(@Param("barcode") barcode: Long? = null,
                              @Param("nameContaining") nameContaining: String? = null,
