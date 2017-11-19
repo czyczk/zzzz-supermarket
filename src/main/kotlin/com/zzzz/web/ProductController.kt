@@ -31,6 +31,7 @@ class ProductController {
             productService.insert(barcode, name, price, shelfLife, isRefundable)
             ExecutionResult(true)
         } catch (e: InsertionFailedException) {
+            e.printStackTrace()
             ExecutionResult(e)
         }
         return result
@@ -52,6 +53,7 @@ class ProductController {
             ExecutionResult(true)
         } catch (e: UpdateFailedException) {
             // TODO Exception type unknown
+            e.printStackTrace()
             ExecutionResult(e)
         }
         return result
