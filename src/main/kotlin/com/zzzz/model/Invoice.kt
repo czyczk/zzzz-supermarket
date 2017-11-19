@@ -17,16 +17,19 @@ class Invoice {
 
     var discountedPrice: BigDecimal? = null
 
-    var inventoryList: List<Inventory> by Delegates.notNull()
+    var inventoryList: List<Inventory>? = null
 
     constructor()
 
-    constructor(invoiceHelper: InvoiceHelper, listInvoiceInventoryHelper: List<InvoiceInventoryHelper>) {
+    constructor(invoiceHelper: InvoiceHelper) {
         this.id = invoiceHelper.id
         this.time = invoiceHelper.time
         this.memberId = invoiceHelper.memberId
         this.totalPrice = invoiceHelper.totalPrice
         this.discountedPrice = invoiceHelper.discountedPrice
+    }
+
+    constructor(invoiceHelper: InvoiceHelper, listInvoiceInventoryHelper: List<InvoiceInventoryHelper>): this(invoiceHelper) {
         this.inventoryList = listInvoiceInventoryHelper.map { it.inventory!! }
     }
 
@@ -52,7 +55,7 @@ class Invoice {
         result = 31 * result + (memberId?.hashCode() ?: 0)
         result = 31 * result + totalPrice.hashCode()
         result = 31 * result + (discountedPrice?.hashCode() ?: 0)
-        result = 31 * result + inventoryList.hashCode()
+        result = 31 * result + (inventoryList?.hashCode() ?: 0)
         return result
     }
 
