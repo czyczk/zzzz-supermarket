@@ -14,7 +14,7 @@ class ProductServiceTest : ServiceTestBase() {
     @Test
     fun testQueryByBarcode() {
         val barcode = 6903244675147L
-        val product = productService.getProductByBarcode(barcode)
+        val product = productService.getProductByPk(barcode)
         assertTrue(product != null)
         product as Product
         assertEquals("心相印茶语 丝享 390张", product.name)

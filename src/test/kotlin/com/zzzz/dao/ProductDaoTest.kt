@@ -15,7 +15,7 @@ class ProductDaoTest : DaoUnitTestBase() {
     @Test
     fun testQueryByBarcode() {
         val barcode = 6903244675147L
-        val p = productDao.queryByBarcode(barcode)
+        val p = productDao.queryByPk(barcode)
 
         assertTrue(p != null)
         p as Product

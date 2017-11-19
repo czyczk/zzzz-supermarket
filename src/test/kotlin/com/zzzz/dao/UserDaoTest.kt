@@ -24,7 +24,7 @@ class UserDaoTest : DaoUnitTestBase() {
         val enumOfAdministrator = UserTypeEnum.ADMINISTRATOR
 
         // Query by ID
-        val user1 = userDao.queryById(id)
+        val user1 = userDao.queryByPk(id)
 
         // A user object should be correctly fetched
         assertTrue(user1 != null)
