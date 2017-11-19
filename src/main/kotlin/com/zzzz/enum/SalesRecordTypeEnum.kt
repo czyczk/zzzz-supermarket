@@ -13,7 +13,7 @@ enum class SalesRecordTypeEnum(val index: Int, val displayName: String) {
 
         @JvmStatic
         fun fromDisplayName(displayName: String): SalesRecordTypeEnum? {
-            return values().firstOrNull { it.displayName == displayName }
+            return values().firstOrNull { it.displayName.equals(displayName, true) }
         }
     }
 }
