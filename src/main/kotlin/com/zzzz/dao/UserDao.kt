@@ -10,11 +10,11 @@ import org.springframework.dao.DuplicateKeyException
  */
 interface UserDao {
     /**
-     * Query a user by an ID
+     * Query a user by its primary key (ID)
      * @param id The ID of the user
      * @return The required user or null if not found
      */
-    fun queryById(id: Long): User?
+    fun queryByPk(id: Long): User?
 
     /**
      * Query a user by a username

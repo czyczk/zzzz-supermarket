@@ -1,9 +1,9 @@
 package com.zzzz.enum
 
 enum class UserTypeEnum(val index: Int, val displayName: String) {
-    ADMINISTRATOR(0, "Administrator"),
-    CLERK(1, "Clerk"),
-    CS_WORKER(2, "Custom service worker");
+    ADMINISTRATOR(0, "administrator"),
+    CLERK(1, "clerk"),
+    CS_WORKER(2, "cs_worker");
 
     companion object {
         @JvmStatic
