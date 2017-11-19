@@ -15,9 +15,10 @@ abstract class SalesRecord {
 
     var reason: String? = null
 
-    var invoice: Invoice? = null
+    lateinit var invoice: Invoice
 
-    var difference: BigDecimal? = null
+    val difference: BigDecimal
+        get() = invoice.discountedPrice?: invoice.totalPrice
 
     constructor()
 
@@ -27,7 +28,6 @@ abstract class SalesRecord {
         this.type = salesRecordHelper.type
         this.reason = salesRecordHelper.reason
         this.invoice = invoice
-        this.difference = invoice.discountedPrice?: invoice.totalPrice
     }
 
     override fun equals(other: Any?): Boolean {
@@ -50,7 +50,7 @@ abstract class SalesRecord {
         result = 31 * result + time.hashCode()
         result = 31 * result + type.hashCode()
         result = 31 * result + (reason?.hashCode() ?: 0)
-        result = 31 * result + (invoice?.hashCode() ?: 0)
+        result = 31 * result + invoice.hashCode()
         return result
     }
 
