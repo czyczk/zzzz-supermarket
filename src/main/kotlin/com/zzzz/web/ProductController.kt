@@ -85,17 +85,13 @@ class ProductController {
              @RequestParam(required = false) isRefundable: Boolean?
     ): ExecutionResult<List<Product>> {
         val result: ExecutionResult<List<Product>>
-        result = try {
-            val products = productService.getProductsWithConstraints(
-                    barcode, nameContaining,
-                    minPrice, maxPrice,
-                    minShelfLife, maxShelfLife,
-                    isRefundable
-            )
-            ExecutionResult(products)
-        } catch (e: Exception) {
-            ExecutionResult(e)
-        }
+        val products = productService.getProductsWithConstraints(
+                barcode, nameContaining,
+                minPrice, maxPrice,
+                minShelfLife, maxShelfLife,
+                isRefundable
+        )
+        result = ExecutionResult(products)
         return result
     }
 }
