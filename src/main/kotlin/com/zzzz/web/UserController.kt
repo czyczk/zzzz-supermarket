@@ -1,7 +1,6 @@
 package com.zzzz.web
 
 import com.zzzz.dto.ExecutionResult
-import com.zzzz.enum.UserTypeEnum
 import com.zzzz.exception.IncorrectItemTypeException
 import com.zzzz.exception.InsertionFailedException
 import com.zzzz.exception.NoItemFoundException
@@ -17,6 +16,28 @@ import org.springframework.web.bind.annotation.*
 class UserController {
     @Autowired
     private lateinit var userService: UserService
+
+    @RequestMapping(value = "/login",
+            method = arrayOf(RequestMethod.POST),
+            produces = arrayOf("application/json;charset=UTF-8"))
+    @ResponseBody
+    fun login(@RequestParam username: String,
+              @RequestParam password: String): ExecutionResult<Any> {
+        val result: ExecutionResult<Any>
+        result = try {
+            val user = userService.getUserByUsername(username)
+            if (user.password != password)
+                // Incorrect password
+                ExecutionResult(false, "Incorrect password.")
+            else
+                // Validation passed
+                ExecutionResult(true)
+        } catch (e: NoItemFoundException) {
+            // The target user is not found
+            ExecutionResult(false, "Incorrect username.")
+        }
+        return result
+    }
 
     @RequestMapping(value = "/creation",
             method = arrayOf(RequestMethod.POST),
