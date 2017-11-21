@@ -19,9 +19,40 @@
         SELECT LAST_INSERT_ID()
     </select>
 
-    <select id="queryById" resultType="InvoiceHelper">
+    <select id="queryByPk" resultType="InvoiceHelper">
         SELECT invoice_id id, time, member_id, total_price, discounted_price
         FROM Invoice
         WHERE invoice_id = #{_parameter}
+    </select>
+
+    <select id="queryWithConstraints" resultType="InvoiceHelper">
+        SELECT invoice_id id, time, member_id, total_price, discounted_price
+        FROM Invoice
+        <where>
+            <if test="invoiceId != null">
+                AND `invoice_id` = #{invoiceId}
+            </if>
+            <if test="minTime != null">
+                AND `time` >= #{minTime}
+            </if>
+            <if test="maxTime != null">
+                AND `time` &lt;= #{maxTime}
+            </if>
+            <if test="memberId != null">
+                AND `member_id` = #{memberId}
+            </if>
+            <if test="minTotalPrice != null">
+                AND `total_price` >= #{minTotalPrice}
+            </if>
+            <if test="maxTotalPrice != null">
+                AND `total_price` &lt;= #{maxTotalPrice}
+            </if>
+            <if test="minDiscountedPrice != null">
+                AND `discounted_price` >= #{minDiscountedPrice}
+            </if>
+            <if test="maxDiscountedPrice != null">
+                AND `discounted_price` &lt;= #{maxDiscountedPrice}
+            </if>
+        </where>
     </select>
 </mapper>

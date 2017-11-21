@@ -1,6 +1,5 @@
 package com.zzzz.dao
 
-import com.zzzz.model.Inventory
 import com.zzzz.model.Invoice
 import com.zzzz.model.helper.InvoiceHelper
 import org.apache.ibatis.annotations.Param
@@ -17,7 +16,7 @@ interface InvoiceDao {
 
     fun selectLastInsertId(): Long
 
-    fun queryById(id: Long): InvoiceHelper?
+    fun queryByPk(id: Long): InvoiceHelper?
 
     fun queryWithConstraints(
             @Param("invoiceId") id: Long?,
@@ -28,7 +27,5 @@ interface InvoiceDao {
             @Param("maxTotalPrice") maxTotalPrice: BigDecimal?,
             @Param("minDiscountedPrice") minDiscountedPrice: BigDecimal?,
             @Param("maxDiscountedPrice") maxDiscountedPrice: BigDecimal?
-    ): List<Invoice>
-
-    fun delete(id: Long): Int
+    ): List<InvoiceHelper>
 }
