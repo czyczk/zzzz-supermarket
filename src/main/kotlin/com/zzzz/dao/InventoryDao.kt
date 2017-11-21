@@ -21,7 +21,7 @@ interface InventoryDao {
             @Param("qtyOnShelf") qtyOnShelf: Short?
     ): Int
 
-    fun queryByBarcodeAndProductionDate(
+    fun queryByPk(
             @Param("barcode") barcode: Long,
             @Param("productionDate") produtionDate: LocalDate
     ): Inventory?

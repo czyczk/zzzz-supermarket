@@ -25,7 +25,7 @@
               AND `production_date` = #{targetProductionDate}
     </update>
 
-    <select id="queryByBarcodeAndProductionDate" resultType="Inventory">
+    <select id="queryByPk" resultType="Inventory">
         SELECT barcode, production_date, manufacturer, qty_in_stock, qty_on_shelf
         FROM Inventory
         WHERE barcode = #{barcode}
