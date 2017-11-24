@@ -1,33 +1,38 @@
 package com.zzzz.model
 
 import com.zzzz.enum.SalesRecordTypeEnum
+import com.zzzz.model.helper.InvoiceHelper
 import com.zzzz.model.helper.SalesRecordHelper
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import kotlin.properties.Delegates
 
-abstract class SalesRecord {
-    var userId: Long by Delegates.notNull<Long>()
+class SalesRecord(salesRecordHelper: SalesRecordHelper, invoiceHelper: InvoiceHelper) {
+    var userId: Long by Delegates.notNull()
+        private set
 
-    lateinit var time: LocalDateTime
+    var time: LocalDateTime
+        private set
 
-    lateinit var type: SalesRecordTypeEnum
+    var type: SalesRecordTypeEnum
+        private set
 
     var reason: String? = null
+        private set
 
-    lateinit var invoice: Invoice
+    var invoiceId: Long by Delegates.notNull()
+        private set
 
-    val difference: BigDecimal
-        get() = invoice.discountedPrice?: invoice.totalPrice
+    var difference: BigDecimal
+        private set
 
-    constructor()
-
-    constructor(salesRecordHelper: SalesRecordHelper, invoice: Invoice) {
-        this.userId = salesRecordHelper.userId
-        this.time = salesRecordHelper.time
-        this.type = salesRecordHelper.type
-        this.reason = salesRecordHelper.reason
-        this.invoice = invoice
+    init {
+        userId = salesRecordHelper.userId
+        time = salesRecordHelper.time
+        type = salesRecordHelper.type
+        reason = salesRecordHelper.reason
+        invoiceId = salesRecordHelper.invoiceId
+        difference = invoiceHelper.discountedPrice ?: invoiceHelper.totalPrice
     }
 
     override fun equals(other: Any?): Boolean {
@@ -40,7 +45,7 @@ abstract class SalesRecord {
         if (time != other.time) return false
         if (type != other.type) return false
         if (reason != other.reason) return false
-        if (invoice != other.invoice) return false
+        if (invoiceId != other.invoiceId) return false
 
         return true
     }
@@ -50,9 +55,7 @@ abstract class SalesRecord {
         result = 31 * result + time.hashCode()
         result = 31 * result + type.hashCode()
         result = 31 * result + (reason?.hashCode() ?: 0)
-        result = 31 * result + invoice.hashCode()
+        result = 31 * result + invoiceId.hashCode()
         return result
     }
-
-
 }

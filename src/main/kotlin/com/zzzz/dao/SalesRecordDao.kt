@@ -30,5 +30,5 @@ interface SalesRecordDao {
             @Param("maxTime") maxTime: LocalDateTime?,
             @Param("type") type: SalesRecordTypeEnum?,
             @Param("invoiceId") invoiceId: Long?
-    )
+    ): List<SalesRecordHelper>
 }
