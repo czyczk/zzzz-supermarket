@@ -62,9 +62,9 @@ class InventoryServiceImpl : InventoryService {
             maxQtyOnShelf: Short?
     ): List<Inventory> {
         @Suppress("NAME_SHADOWING")
-        val minProductionDate = ParseUtil.parseAsOrNull<LocalDate>(minProductionDate.toString())
+        val minProductionDate = ParseUtil.parseAsOrNull<LocalDate>(minProductionDate?.toString())
         @Suppress("NAME_SHADOWING")
-        val maxProductionDate = ParseUtil.parseAsOrNull<LocalDate>(maxProductionDate.toString())
+        val maxProductionDate = ParseUtil.parseAsOrNull<LocalDate>(maxProductionDate?.toString())
         @Suppress("UnnecessaryVariable")
         val result = inventoryDao.queryWithConstraints(barcode, minProductionDate, maxProductionDate, manufacturerContaining, minQtyInStock, maxQtyInStock, minQtyOnShelf, maxQtyOnShelf)
         return result

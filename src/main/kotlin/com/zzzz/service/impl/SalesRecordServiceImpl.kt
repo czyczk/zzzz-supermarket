@@ -90,9 +90,9 @@ class SalesRecordServiceImpl : SalesRecordService {
             invoiceId: Long?
     ): List<SalesRecord> {
         @Suppress("NAME_SHADOWING")
-        val minTime = ParseUtil.parseAsOrNull<LocalDateTime>(minTime.toString())
+        val minTime = ParseUtil.parseAsOrNull<LocalDateTime>(minTime?.toString())
         @Suppress("NAME_SHADOWING")
-        val maxTime = ParseUtil.parseAsOrNull<LocalDateTime>(maxTime.toString())
+        val maxTime = ParseUtil.parseAsOrNull<LocalDateTime>(maxTime?.toString())
         @Suppress("NAME_SHADOWING")
         val type = parseType(type)
 

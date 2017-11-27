@@ -74,9 +74,9 @@ class InvoiceServiceImpl : InvoiceService {
             minDiscountedPrice: BigDecimal?, maxDiscountedPrice: BigDecimal?
     ): List<InvoiceHelper> {
         @Suppress("NAME_SHADOWING")
-        val minTime = ParseUtil.parseAsOrNull<LocalDateTime>(minTime.toString())
+        val minTime = ParseUtil.parseAsOrNull<LocalDateTime>(minTime?.toString())
         @Suppress("NAME_SHADOWING")
-        val maxTime = ParseUtil.parseAsOrNull<LocalDateTime>(maxTime.toString())
+        val maxTime = ParseUtil.parseAsOrNull<LocalDateTime>(maxTime?.toString())
         @Suppress("UnnecessaryVariable")
         val invoiceList = invoiceDao.queryWithConstraints(id, minTime, maxTime, memberId, minTotalPrice, maxTotalPrice, minDiscountedPrice, maxDiscountedPrice)
         return invoiceList
