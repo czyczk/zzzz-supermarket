@@ -16,7 +16,7 @@ class InvoiceDaoTest : DaoUnitTestBase() {
     @Test
     fun testQueryById() {
         val id = 1L
-        val invoiceHelper = invoiceDao.queryById(id)
+        val invoiceHelper = invoiceDao.queryByPk(id)
         println(invoiceHelper)
         val inventories = invoiceInventoryDao.queryById(id)
         println(inventories)
