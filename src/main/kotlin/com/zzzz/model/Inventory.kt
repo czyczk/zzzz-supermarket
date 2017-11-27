@@ -1,25 +1,28 @@
 package com.zzzz.model
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.zzzz.model.serializer.LocalDateToMilliSerializer
 import java.time.LocalDate
 import kotlin.properties.Delegates
 
 class Inventory {
-    var barcode: Long by Delegates.notNull<Long>()
+    var barcode: Long by Delegates.notNull()
 
-    var productionDate: LocalDate by Delegates.notNull<LocalDate>()
+    @JsonSerialize(using = LocalDateToMilliSerializer::class)
+    lateinit var productionDate: LocalDate
 
-    var manufacturer: String by Delegates.notNull<String>()
+    var manufacturer: String by Delegates.notNull()
 
-    var qtyInStock: Short by Delegates.notNull<Short>()
+    var qtyInStock: Short by Delegates.notNull()
 
-    var qtyOnShelf: Short by Delegates.notNull<Short>()
+    var qtyOnShelf: Short by Delegates.notNull()
 
-    val shelfBarcode: Long
+    val shelfBarcode: String
         get() {
-            return (barcode.toString() +
+            return barcode.toString() +
                     String.format(
                             "%04d%02d%02d", productionDate.year, productionDate.monthValue, productionDate.dayOfMonth
-                    )).toLong()
+                    )
         }
 
     override fun equals(other: Any?): Boolean {
