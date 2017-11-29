@@ -40,7 +40,6 @@ class ProductController {
             productService.update(params.targetBarcode, params.barcode, params.name, params.price, params.shelfLife, params.isRefundable)
             ExecutionResult(true)
         } catch (e: UpdateFailedException) {
-            // TODO Exception type unknown
             e.printStackTrace()
             ExecutionResult(e)
         }
