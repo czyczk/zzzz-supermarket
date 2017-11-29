@@ -7,10 +7,10 @@ import com.zzzz.exception.UpdateFailedException
 import com.zzzz.model.Inventory
 import com.zzzz.service.InventoryService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
+import kotlin.properties.Delegates
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/inventory")
 class InventoryController {
     @Autowired
@@ -19,15 +19,10 @@ class InventoryController {
     @RequestMapping(value = "/creation",
             method = arrayOf(RequestMethod.POST),
             produces = arrayOf("application/json;charset=UTF-8"))
-    @ResponseBody
-    fun creation(@RequestParam barcode: Long,
-                 @RequestParam productionDate: Long,
-                 @RequestParam manufacturer: String,
-                 @RequestParam qtyInStock: Short,
-                 @RequestParam qtyOnShelf: Short): ExecutionResult<Any> {
+    fun creation(@RequestBody params: InventoryCreationHelper): ExecutionResult<Any> {
         val result: ExecutionResult<Any>
         result = try {
-            inventoryService.insert(barcode, productionDate, manufacturer, qtyInStock, qtyOnShelf)
+            inventoryService.insert(params.barcode, params.productionDate, params.manufacturer, params.qtyInStock, params.qtyOnShelf)
             ExecutionResult(true)
         } catch (e: InsertionFailedException) {
             e.printStackTrace()
@@ -39,15 +34,10 @@ class InventoryController {
     @RequestMapping(value = "/update",
             method = arrayOf(RequestMethod.POST),
             produces = arrayOf("application/json;charset=UTF-8"))
-    @ResponseBody
-    fun update(@RequestParam targetBarcode: Long,
-               @RequestParam targetProductionDate: Long,
-               @RequestParam(required = false) manufacturer: String?,
-               @RequestParam(required = false) qtyInStock: Short?,
-               @RequestParam(required = false) qtyOnShelf: Short?): ExecutionResult<Any> {
+    fun update(@RequestBody params: InventoryUpdateHelper): ExecutionResult<Any> {
         val result: ExecutionResult<Any>
         result = try {
-            inventoryService.update(targetBarcode, targetProductionDate, manufacturer, qtyInStock, qtyOnShelf)
+            inventoryService.update(params.targetBarcode, params.targetProductionDate, params.manufacturer, params.qtyInStock, params.qtyOnShelf)
             ExecutionResult(true)
         } catch (e: UpdateFailedException) {
             e.printStackTrace()
@@ -59,7 +49,6 @@ class InventoryController {
     @RequestMapping(value = "/{barcode}/{productionDate}/detail",
             method = arrayOf(RequestMethod.GET),
             produces = arrayOf("application/json;charset=UTF-8"))
-    @ResponseBody
     fun detail(@PathVariable barcode: Long,
                @PathVariable productionDate: Long): ExecutionResult<Inventory> {
         val result: ExecutionResult<Inventory>
@@ -75,7 +64,6 @@ class InventoryController {
     @RequestMapping(value = "/list",
             method = arrayOf(RequestMethod.GET),
             produces = arrayOf("application/json;charset=UTF-8"))
-    @ResponseBody
     fun list(@RequestParam(required = false) barcode: Long?,
              @RequestParam(required = false) minProductionDate: Long?,
              @RequestParam(required = false) maxProductionDate: Long?,
@@ -88,5 +76,21 @@ class InventoryController {
         val inventories = inventoryService.getInventoriesWithConstraints(barcode, minProductionDate, maxProductionDate, manufacturerContaining, minQtyInStock, maxQtyInStock, minQtyOnShelf, maxQtyOnShelf)
         result = ExecutionResult(inventories)
         return result
+    }
+
+    class InventoryCreationHelper {
+        var barcode: Long by Delegates.notNull()
+        var productionDate: Long by Delegates.notNull()
+        lateinit var manufacturer: String
+        var qtyInStock: Short by Delegates.notNull()
+        var qtyOnShelf: Short by Delegates.notNull()
+    }
+
+    class InventoryUpdateHelper {
+        var targetBarcode: Long by Delegates.notNull()
+        var targetProductionDate: Long by Delegates.notNull()
+        var manufacturer: String? = null
+        var qtyInStock: Short? = null
+        var qtyOnShelf: Short? = null
     }
 }

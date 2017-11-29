@@ -8,7 +8,10 @@ import com.zzzz.model.Inventory
 import com.zzzz.service.InventoryService
 import com.zzzz.util.ParseUtil
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.stereotype.Service
+import java.sql.SQLIntegrityConstraintViolationException
 import java.time.LocalDate
 
 @Service
@@ -25,9 +28,14 @@ class InventoryServiceImpl : InventoryService {
             qtyOnShelf: Short) {
         @Suppress("NAME_SHADOWING")
         val productionDate = ParseUtil.parseAs<LocalDate>(productionDate.toString())
-        val rowsAffected = inventoryDao.insert(barcode, productionDate, manufacturer, qtyInStock, qtyOnShelf)
-        if (rowsAffected == 0)
-            throw InsertionFailedException()
+        try {
+            inventoryDao.insert(barcode, productionDate, manufacturer, qtyInStock, qtyOnShelf)
+        } catch (e: DuplicateKeyException) {
+            throw InsertionFailedException(e.mostSpecificCause.message)
+        } catch (e: DataIntegrityViolationException) {
+            // Usually caused by foreign key constraints violation
+            throw InsertionFailedException(e.mostSpecificCause.message)
+        }
     }
 
     override fun update(
@@ -38,9 +46,11 @@ class InventoryServiceImpl : InventoryService {
             qtyOnShelf: Short?) {
         @Suppress("NAME_SHADOWING")
         val targetProductionDate = ParseUtil.parseAs<LocalDate>(targetProductionDate.toString())
-        val rowsAffected = inventoryDao.update(targetBarcode, targetProductionDate, manufacturer, qtyInStock, qtyOnShelf)
-        if (rowsAffected == 0)
-            throw UpdateFailedException()
+        try {
+            inventoryDao.update(targetBarcode, targetProductionDate, manufacturer, qtyInStock, qtyOnShelf)
+        } catch (e: DuplicateKeyException) {
+            throw UpdateFailedException(e.mostSpecificCause.message)
+        }
     }
 
     override fun getInventoryByPk(barcode: Long, productionDate: Long): Inventory {

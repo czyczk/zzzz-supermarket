@@ -2,9 +2,12 @@ package com.zzzz.dao
 
 import com.zzzz.model.Inventory
 import org.apache.ibatis.annotations.Param
+import org.springframework.dao.DuplicateKeyException
+import java.sql.SQLIntegrityConstraintViolationException
 import java.time.LocalDate
 
 interface InventoryDao {
+    @Throws(DuplicateKeyException::class, SQLIntegrityConstraintViolationException::class)
     fun insert(
             @Param("barcode") barcode: Long,
             @Param("productionDate") productionDate: LocalDate,
@@ -13,6 +16,7 @@ interface InventoryDao {
             @Param("qtyOnShelf") qtyOnShelf: Short
     ): Int
 
+    @Throws(DuplicateKeyException::class)
     fun update(
             @Param("targetBarcode") targetBarcode: Long,
             @Param("targetProductionDate") targetProductionDate: LocalDate,

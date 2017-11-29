@@ -14,7 +14,6 @@ interface InventoryService {
                qtyInStock: Short,
                qtyOnShelf: Short)
 
-    // TODO Exception type unknown
     @Throws(UpdateFailedException::class)
     fun update(targetBarcode: Long,
                targetProductionDate: Long,
