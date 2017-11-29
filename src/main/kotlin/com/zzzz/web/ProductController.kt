@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/product")
 class ProductController {
     @Autowired
@@ -20,7 +20,6 @@ class ProductController {
     @RequestMapping(value = "/creation",
             method = arrayOf(RequestMethod.POST),
             produces = arrayOf("application/json;charset=UTF-8"))
-    @ResponseBody
     fun creation(@RequestParam barcode: Long,
                  @RequestParam name: String,
                  @RequestParam price: BigDecimal,
@@ -40,16 +39,10 @@ class ProductController {
     @RequestMapping(value = "/update",
             method = arrayOf(RequestMethod.POST),
             produces = arrayOf("application/json;charset=UTF-8"))
-    @ResponseBody
-    fun update(@RequestParam targetBarcode: Long,
-               @RequestParam(required = false) barcode: Long?,
-               @RequestParam(required = false) name: String?,
-               @RequestParam(required = false) price: BigDecimal?,
-               @RequestParam(required = false) shelfLife: Int?,
-               @RequestParam(required = false) isRefundable: Boolean?): ExecutionResult<Any> {
+    fun update(@RequestBody params: ProductUpdateHelper): ExecutionResult<Any> {
         val result: ExecutionResult<Any>
         result = try {
-            productService.update(targetBarcode, barcode, name, price, shelfLife, isRefundable)
+            productService.update(params.targetBarcode, params.barcode, params.name, params.price, params.shelfLife, params.isRefundable)
             ExecutionResult(true)
         } catch (e: UpdateFailedException) {
             // TODO Exception type unknown
@@ -62,7 +55,6 @@ class ProductController {
     @RequestMapping(value = "/{barcode}/detail",
             method = arrayOf(RequestMethod.GET),
             produces = arrayOf("application/json;charset=UTF-8"))
-    @ResponseBody
     fun detail(@PathVariable barcode: Long): ExecutionResult<Product> {
         val result: ExecutionResult<Product>
         result = try {
@@ -77,7 +69,6 @@ class ProductController {
     @RequestMapping(value = "/list",
             method = arrayOf(RequestMethod.GET),
             produces = arrayOf("application/json;charset=UTF-8"))
-    @ResponseBody
     fun list(@RequestParam(required = false) barcode: Long?,
              @RequestParam(required = false) nameContaining: String?,
              @RequestParam(required = false) minPrice: BigDecimal?,
@@ -95,5 +86,14 @@ class ProductController {
         )
         result = ExecutionResult(products)
         return result
+    }
+
+    class ProductUpdateHelper {
+        var targetBarcode: Long = 0
+        var barcode: Long? = null
+        var name: String? = null
+        var price: BigDecimal? = null
+        var shelfLife: Int? = null
+        var isRefundable: Boolean? = null
     }
 }

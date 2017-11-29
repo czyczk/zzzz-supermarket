@@ -23,7 +23,7 @@
     <update id="update">
         UPDATE Product
         <set>
-            <if test="barcode != null and !barcode.trim().equals(&quot;&quot;)">
+            <if test="barcode != null">
                 `barcode` = #{barcode},
             </if>
             <if test="name != null and !name.trim().equals(&quot;&quot;)">
