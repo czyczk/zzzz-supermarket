@@ -7,7 +7,6 @@ import com.zzzz.exception.UpdateFailedException
 import com.zzzz.model.Product
 import com.zzzz.service.ProductService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
 
@@ -20,14 +19,10 @@ class ProductController {
     @RequestMapping(value = "/creation",
             method = arrayOf(RequestMethod.POST),
             produces = arrayOf("application/json;charset=UTF-8"))
-    fun creation(@RequestParam barcode: Long,
-                 @RequestParam name: String,
-                 @RequestParam price: BigDecimal,
-                 @RequestParam shelfLife: Int,
-                 @RequestParam isRefundable: Boolean): ExecutionResult<Any> {
+    fun creation(@RequestBody params: Product): ExecutionResult<Any> {
         val result: ExecutionResult<Any>
         result = try {
-            productService.insert(barcode, name, price, shelfLife, isRefundable)
+            productService.insert(params.barcode, params.name, params.price, params.shelfLife, params.isRefundable)
             ExecutionResult(true)
         } catch (e: InsertionFailedException) {
             e.printStackTrace()

@@ -14,7 +14,6 @@ interface ProductService {
                shelfLife: Int,
                isRefundable: Boolean)
 
-    // TODO Exception type unknown
     @Throws(UpdateFailedException::class)
     fun update(targetBarcode: Long,
                barcode: Long?,

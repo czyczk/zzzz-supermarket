@@ -7,6 +7,7 @@ import com.zzzz.exception.UpdateFailedException
 import com.zzzz.model.Product
 import com.zzzz.service.ProductService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
@@ -35,9 +36,11 @@ class ProductServiceImpl : ProductService {
             price: BigDecimal?,
             shelfLife: Int?,
             isRefundable: Boolean?) {
-        val rowsAffected = productDao.update(targetBarcode, barcode, name, price, shelfLife, isRefundable)
-        if (rowsAffected == 0)
-            throw UpdateFailedException()
+        try {
+            productDao.update(targetBarcode, barcode, name, price, shelfLife, isRefundable)
+        } catch (e: DuplicateKeyException) {
+            throw UpdateFailedException(e.mostSpecificCause.message)
+        }
     }
 
     override fun getProductByPk(barcode: Long): Product {
