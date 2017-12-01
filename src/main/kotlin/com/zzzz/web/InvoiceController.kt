@@ -3,7 +3,6 @@ package com.zzzz.web
 import com.zzzz.dto.ExecutionResult
 import com.zzzz.exception.InsertionFailedException
 import com.zzzz.exception.NoItemFoundException
-import com.zzzz.model.Inventory
 import com.zzzz.model.Invoice
 import com.zzzz.model.InvoiceInventory
 import com.zzzz.model.helper.InvoiceHelper
