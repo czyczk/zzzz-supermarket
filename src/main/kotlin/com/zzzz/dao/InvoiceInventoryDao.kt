@@ -1,14 +1,17 @@
 package com.zzzz.dao
 
-import com.zzzz.model.Inventory
+import com.zzzz.model.InvoiceInventory
 import com.zzzz.model.helper.InvoiceInventoryHelper
 import org.apache.ibatis.annotations.Param
+import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.dao.DuplicateKeyException
 import java.time.LocalDate
 
 interface InvoiceInventoryDao {
+    @Throws(DuplicateKeyException::class, DataIntegrityViolationException::class)
     fun insertInventoryList(
             @Param("invoiceId") invoiceId: Long,
-            @Param("inventoryList") inventoryList: List<Inventory>
+            @Param("invoiceInventoryList") invoiceInventoryList: List<InvoiceInventory>
     ): Int
 
     fun queryByPk(

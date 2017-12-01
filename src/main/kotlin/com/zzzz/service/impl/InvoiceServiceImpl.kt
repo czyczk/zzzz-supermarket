@@ -4,12 +4,14 @@ import com.zzzz.dao.InvoiceDao
 import com.zzzz.dao.InvoiceInventoryDao
 import com.zzzz.exception.InsertionFailedException
 import com.zzzz.exception.NoItemFoundException
-import com.zzzz.model.Inventory
 import com.zzzz.model.Invoice
+import com.zzzz.model.InvoiceInventory
 import com.zzzz.model.helper.InvoiceHelper
 import com.zzzz.service.InvoiceService
 import com.zzzz.util.ParseUtil
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
@@ -31,23 +33,28 @@ class InvoiceServiceImpl : InvoiceService {
             memberId: Long?,
             totalPrice: BigDecimal,
             discountedPrice: BigDecimal?,
-            inventoryList: List<Inventory>
-    ) {
+            invoiceInventoryList: List<InvoiceInventory>
+    ): Long {
         @Suppress("NAME_SHADOWING")
         val time = ParseUtil.parseAs<LocalDateTime>(time.toString())
 
         // Insert the invoice
-        var rowsAffected = invoiceDao.insert(time, memberId, totalPrice, discountedPrice)
-        if (rowsAffected == 0)
-            throw InsertionFailedException()
+        try {
+            invoiceDao.insert(time, memberId, totalPrice, discountedPrice)
 
-        // Get the last insert ID
-        val invoiceId = invoiceDao.selectLastInsertId()
+            // Get the last insert ID
+            val invoiceId = invoiceDao.selectLastInsertId()
 
-        // Insert the inventory list
-        rowsAffected = invoiceInventoryDao.insertInventoryList(invoiceId, inventoryList)
-        if (rowsAffected == 0)
-            throw InsertionFailedException()
+            // Insert the inventory list
+            invoiceInventoryDao.insertInventoryList(invoiceId, invoiceInventoryList)
+
+            // Return ID of the last inserted item
+            return invoiceId
+        } catch (e: DuplicateKeyException) {
+            throw InsertionFailedException(e.mostSpecificCause.message)
+        } catch (e: DataIntegrityViolationException) {
+            throw InsertionFailedException(e.mostSpecificCause.message)
+        }
     }
 
     override fun getInvoiceByPk(id: Long): InvoiceHelper {

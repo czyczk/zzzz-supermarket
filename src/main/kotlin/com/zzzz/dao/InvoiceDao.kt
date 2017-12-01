@@ -1,12 +1,13 @@
 package com.zzzz.dao
 
-import com.zzzz.model.Invoice
 import com.zzzz.model.helper.InvoiceHelper
 import org.apache.ibatis.annotations.Param
+import org.springframework.dao.DuplicateKeyException
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
 interface InvoiceDao {
+    @Throws(DuplicateKeyException::class)
     fun insert(
             @Param("time") time: LocalDateTime,
             @Param("memberId") memberId: Long?,

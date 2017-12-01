@@ -20,7 +20,7 @@ interface SalesRecordService {
     fun insertPurchaseRecord(
             userId: Long,
             time: Long,
-            invoice: Invoice
+            invoiceId: Long
     )
 
     @Throws(NoItemFoundException::class)

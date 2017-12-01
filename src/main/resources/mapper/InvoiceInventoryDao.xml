@@ -4,20 +4,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zzzz.dao.InvoiceInventoryDao">
     <insert id="insertInventoryList">
-        <foreach collection="inventoryList" item="it">
-            INSERT IGNORE INTO `invoice-inventory`(invoice_id, barcode, production_date)
-            VALUE(#{invoiceId}, #{it.barcode}, #{it.productionDate})
+        INSERT INTO `invoice-inventory`(invoice_id, barcode, production_date, qty)
+        VALUES
+        <foreach collection="invoiceInventoryList" item="it"
+                 open="(" separator="),(" close=")">
+            #{invoiceId}, #{it.barcode}, #{it.productionDate}, #{it.qty}
         </foreach>
     </insert>
 
     <select id="queryByPk" resultType="InvoiceInventoryHelper">
         SELECT invoice_id,
-            barcode 'inventory.barcode',
-            production_date 'inventory.production_date',
-            manufacturer 'inventory.manufacturer',
-            qty_in_stock 'inventory.qty_in_stock',
-            qty_on_shelf 'inventory.qty_on_shelf'
-        FROM `invoice-inventory` JOIN inventory USING(barcode, production_date)
+            barcode 'invoiceInventory.barcode',
+            production_date 'invoiceInventory.production_date',
+            qty 'invoiceInventory.qty',
+            name 'invoiceInventory.name',
+            price 'invoiceInventory.unitPrice',
+            price * qty 'invoiceInventory.cost'
+        FROM `invoice-inventory` JOIN inventory USING(barcode, production_date) JOIN product USING(barcode)
         WHERE invoice_id = #{invoiceId}
               AND barcode = #{barcode}
               AND production_date = #{productionDate}
@@ -25,12 +28,13 @@
 
     <select id="queryById" resultType="InvoiceInventoryHelper">
         SELECT invoice_id,
-            barcode 'inventory.barcode',
-            production_date 'inventory.production_date',
-            manufacturer 'inventory.manufacturer',
-            qty_in_stock 'inventory.qty_in_stock',
-            qty_on_shelf 'inventory.qty_on_shelf'
-        FROM `invoice-inventory` JOIN inventory USING(barcode, production_date)
+            barcode 'invoiceInventory.barcode',
+            production_date 'invoiceInventory.production_date',
+            qty 'invoiceInventory.qty',
+            name 'invoiceInventory.name',
+            price 'invoiceInventory.unitPrice',
+            price * qty 'invoiceInventory.cost'
+        FROM `invoice-inventory` JOIN inventory USING(barcode, production_date) JOIN product USING(barcode)
         WHERE invoice_id = #{_parameter}
     </select>
 </mapper>

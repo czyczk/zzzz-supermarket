@@ -7,6 +7,8 @@ class DateUtil {
         fun toMilli(localDateTime: LocalDateTime): Long =
                 ZonedDateTime.of(localDateTime, ZoneId.systemDefault()).toInstant().toEpochMilli()
 
+        fun toMilli(localDate: LocalDate): Long = toMilli(localDate.atStartOfDay())
+
         fun fromMilliToTime(epochMilli: Long): LocalDateTime =
                 ZonedDateTime.ofInstant(Instant.ofEpochMilli(epochMilli), ZoneId.systemDefault()).toLocalDateTime()
 

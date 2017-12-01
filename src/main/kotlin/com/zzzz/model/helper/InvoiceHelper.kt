@@ -1,6 +1,8 @@
 package com.zzzz.model.helper
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.zzzz.model.Invoice
+import com.zzzz.model.serializer.LocalDateTimeToMilliSerializer
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import kotlin.properties.Delegates
@@ -8,7 +10,8 @@ import kotlin.properties.Delegates
 class InvoiceHelper {
     var id: Long by Delegates.notNull()
 
-    var time: LocalDateTime by Delegates.notNull()
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer::class)
+    lateinit var time: LocalDateTime
 
     var memberId: Long? = null
 

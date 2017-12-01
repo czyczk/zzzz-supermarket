@@ -1,5 +1,6 @@
 package localExperiment
 
+import com.zzzz.util.DateUtil
 import com.zzzz.util.ParseUtil
 import java.time.*
 
@@ -11,8 +12,6 @@ fun main(args: Array<String>) {
 //    val t = ParseUtil.parseAsOrNull<LocalDateTime>(now)
 //    println(t)
 
-    val barcode = 3886719283748L
-    val productionDate = LocalDate.of(2004, 3, 2)
-    val str = barcode.toString() + String.format("%04d%02d%02d", productionDate.year, productionDate.monthValue, productionDate.dayOfMonth)
-    println(str)
+    val productionDate = LocalDate.of(2017, 10, 28)!!
+    println(DateUtil.toMilli(productionDate))
 }

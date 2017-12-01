@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 
 @Controller
-@RequestMapping("/api/v1/salesRecord")
+@RequestMapping("/api/v1/sales-record")
 class SalesRecordController {
     @Autowired
     private lateinit var salesRecordService: SalesRecordService
 
-    @RequestMapping(value = "/afterSalesRecord/creation",
+    @RequestMapping(value = "/after-sales-record/creation",
             method = arrayOf(RequestMethod.POST),
             produces = arrayOf("application/json;charset=UTF-8"))
     fun afterSalesRecordCreation(
@@ -42,17 +42,17 @@ class SalesRecordController {
         return result
     }
 
-    @RequestMapping(value = "/purchaseRecord/creation",
+    @RequestMapping(value = "/purchase-record/creation",
             method = arrayOf(RequestMethod.POST),
             produces = arrayOf("application/json;charset=UTF-8"))
     fun purchaseRecordCreation(
             @RequestParam userId: Long,
             @RequestParam time: Long,
-            @RequestParam invoice: Invoice
+            @RequestParam invoiceId: Long
     ): ExecutionResult<Any> {
         val result: ExecutionResult<Any>
         result = try {
-            salesRecordService.insertPurchaseRecord(userId, time, invoice)
+            salesRecordService.insertPurchaseRecord(userId, time, invoiceId)
             ExecutionResult(true)
         } catch (e: InsertionFailedException) {
             e.printStackTrace()

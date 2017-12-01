@@ -1,7 +1,9 @@
 package com.zzzz.model
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.zzzz.model.helper.InvoiceHelper
 import com.zzzz.model.helper.InvoiceInventoryHelper
+import com.zzzz.model.serializer.LocalDateTimeToMilliSerializer
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import kotlin.properties.Delegates
@@ -9,7 +11,8 @@ import kotlin.properties.Delegates
 class Invoice {
     var id: Long by Delegates.notNull()
 
-    var time: LocalDateTime by Delegates.notNull()
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer::class)
+    lateinit var time: LocalDateTime
 
     var memberId: Long? = null
 
@@ -17,7 +20,7 @@ class Invoice {
 
     var discountedPrice: BigDecimal? = null
 
-    var inventoryList: List<Inventory>? = null
+    var invoiceInventoryList: List<InvoiceInventory>? = null
 
     constructor()
 
@@ -30,7 +33,7 @@ class Invoice {
     }
 
     constructor(invoiceHelper: InvoiceHelper, listInvoiceInventoryHelper: List<InvoiceInventoryHelper>): this(invoiceHelper) {
-        this.inventoryList = listInvoiceInventoryHelper.map { it.inventory!! }
+        this.invoiceInventoryList = listInvoiceInventoryHelper.map { it.invoiceInventory!! }
     }
 
     override fun equals(other: Any?): Boolean {
@@ -44,7 +47,7 @@ class Invoice {
         if (memberId != other.memberId) return false
         if (totalPrice != other.totalPrice) return false
         if (discountedPrice != other.discountedPrice) return false
-        if (inventoryList != other.inventoryList) return false
+        if (invoiceInventoryList != other.invoiceInventoryList) return false
 
         return true
     }
@@ -55,11 +58,11 @@ class Invoice {
         result = 31 * result + (memberId?.hashCode() ?: 0)
         result = 31 * result + totalPrice.hashCode()
         result = 31 * result + (discountedPrice?.hashCode() ?: 0)
-        result = 31 * result + (inventoryList?.hashCode() ?: 0)
+        result = 31 * result + (invoiceInventoryList?.hashCode() ?: 0)
         return result
     }
 
     override fun toString(): String {
-        return "Invoice(id=$id, time=$time, memberId=$memberId, totalPrice=$totalPrice, discountedPrice=$discountedPrice, inventoryList=$inventoryList)"
+        return "Invoice(id=$id, time=$time, memberId=$memberId, totalPrice=$totalPrice, discountedPrice=$discountedPrice, invoiceInventoryList=$invoiceInventoryList)"
     }
 }

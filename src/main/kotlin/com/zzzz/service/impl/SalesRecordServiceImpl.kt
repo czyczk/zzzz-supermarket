@@ -53,11 +53,11 @@ class SalesRecordServiceImpl : SalesRecordService {
     override fun insertPurchaseRecord(
             userId: Long,
             time: Long,
-            invoice: Invoice
+            invoiceId: Long
     ) {
-        // Insert the invoice first (exceptions are thrown during this process if there are any)
-        invoiceService.insert(time, invoice.memberId, invoice.totalPrice, invoice.discountedPrice, invoice.inventoryList!!)
-        invoice.id = invoiceDao.selectLastInsertId()
+//        // Insert the invoice first (exceptions are thrown during this process if there are any)
+//        invoiceService.insert(time, invoice.memberId, invoice.totalPrice, invoice.discountedPrice, invoice.inventoryList!!)
+//        invoice.id = invoiceDao.selectLastInsertId()
 
         // Insert the purchase record
         @Suppress("NAME_SHADOWING")
@@ -65,7 +65,8 @@ class SalesRecordServiceImpl : SalesRecordService {
 
         val type = SalesRecordTypeEnum.PURCHASE
         val reason = null
-        val rowsAffected = salesRecordDao.insert(userId, time, type, reason, invoice.id)
+//        val rowsAffected = salesRecordDao.insert(userId, time, type, reason, invoice.id)
+        val rowsAffected = salesRecordDao.insert(userId, time, type, reason, invoiceId)
         if (rowsAffected == 0)
             throw InsertionFailedException()
     }

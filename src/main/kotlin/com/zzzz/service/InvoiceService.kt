@@ -2,20 +2,24 @@ package com.zzzz.service
 
 import com.zzzz.exception.InsertionFailedException
 import com.zzzz.exception.NoItemFoundException
-import com.zzzz.model.Inventory
 import com.zzzz.model.Invoice
+import com.zzzz.model.InvoiceInventory
 import com.zzzz.model.helper.InvoiceHelper
 import java.math.BigDecimal
 
 interface InvoiceService {
+    /**
+     *
+     * @return ID of the last inserted item
+     */
     @Throws(InsertionFailedException::class)
     fun insert(
             time: Long,
             memberId: Long?,
             totalPrice: BigDecimal,
             discountedPrice: BigDecimal?,
-            inventoryList: List<Inventory>
-    )
+            invoiceInventoryList: List<InvoiceInventory>
+    ): Long
 
     @Throws(NoItemFoundException::class)
     fun getInvoiceByPk(id: Long): InvoiceHelper
