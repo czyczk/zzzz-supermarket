@@ -16,6 +16,12 @@ class InvoiceInventory {
         this.productionDate = ParseUtil.parseAs(productionDate.toString())
     }
 
+//    fun setShelfBarcode(shelfBarcode: String) {
+//        val barcode = shelfBarcode.dropLast(8).toLong()
+//        val productionDateStr = shelfBarcode.drop(13)
+//        this.productionDate = LocalDate.parse(productionDateStr)
+//    }
+
     var name: String? = null
 
     var qty: Short by Delegates.notNull()
@@ -26,7 +32,7 @@ class InvoiceInventory {
 
     val shelfBarcode: String
         get() {
-            return barcode.toString() +
+            return String.format("%013d", barcode) +
                     String.format(
                             "%04d%02d%02d", productionDate!!.year, productionDate!!.monthValue, productionDate!!.dayOfMonth
                     )

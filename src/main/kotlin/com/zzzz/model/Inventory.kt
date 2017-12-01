@@ -19,7 +19,7 @@ class Inventory {
 
     val shelfBarcode: String
         get() {
-            return barcode.toString() +
+            return String.format("%013d", barcode) +
                     String.format(
                             "%04d%02d%02d", productionDate.year, productionDate.monthValue, productionDate.dayOfMonth
                     )
