@@ -1,16 +1,19 @@
 package com.zzzz.model
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.zzzz.enum.SalesRecordTypeEnum
 import com.zzzz.model.helper.InvoiceHelper
 import com.zzzz.model.helper.SalesRecordHelper
+import com.zzzz.model.serializer.LocalDateTimeToMilliSerializer
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import kotlin.properties.Delegates
 
-class SalesRecord(salesRecordHelper: SalesRecordHelper, invoiceHelper: InvoiceHelper) {
+class SalesRecord {
     var userId: Long by Delegates.notNull()
         private set
 
+    @JsonSerialize(using = LocalDateTimeToMilliSerializer::class)
     var time: LocalDateTime
         private set
 
@@ -23,16 +26,30 @@ class SalesRecord(salesRecordHelper: SalesRecordHelper, invoiceHelper: InvoiceHe
     var invoiceId: Long by Delegates.notNull()
         private set
 
-    var difference: BigDecimal
+    lateinit var difference: BigDecimal
         private set
 
-    init {
+    var inventoryList: List<InvoiceInventory>? = null
+        private set
+
+    private constructor(salesRecordHelper: SalesRecordHelper) {
         userId = salesRecordHelper.userId
         time = salesRecordHelper.time
         type = salesRecordHelper.type
         reason = salesRecordHelper.reason
         invoiceId = salesRecordHelper.invoiceId
+    }
+
+    constructor(salesRecordHelper: SalesRecordHelper, invoiceHelper: InvoiceHelper) : this(salesRecordHelper) {
         difference = invoiceHelper.discountedPrice ?: invoiceHelper.totalPrice
+    }
+
+    constructor(salesRecordHelper: SalesRecordHelper, inventoryList: List<InvoiceInventory>) : this(salesRecordHelper) {
+        this.inventoryList = inventoryList
+        this.difference = BigDecimal.ZERO
+        inventoryList.forEach {
+            this.difference -= it.cost!!
+        }
     }
 
     override fun equals(other: Any?): Boolean {

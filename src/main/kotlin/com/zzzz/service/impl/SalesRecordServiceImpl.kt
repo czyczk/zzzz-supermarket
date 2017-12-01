@@ -1,17 +1,19 @@
 package com.zzzz.service.impl
 
-import com.zzzz.dao.InvoiceDao
 import com.zzzz.dao.SalesRecordDao
+import com.zzzz.dao.SalesRecordInventoryDao
 import com.zzzz.enum.SalesRecordTypeEnum
 import com.zzzz.exception.IncorrectItemTypeException
 import com.zzzz.exception.InsertionFailedException
 import com.zzzz.exception.NoItemFoundException
-import com.zzzz.model.Invoice
+import com.zzzz.model.InvoiceInventory
 import com.zzzz.model.SalesRecord
 import com.zzzz.service.InvoiceService
 import com.zzzz.service.SalesRecordService
 import com.zzzz.util.ParseUtil
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -24,18 +26,20 @@ class SalesRecordServiceImpl : SalesRecordService {
 
     @Suppress("SpringKotlinAutowiring")
     @Autowired
-    private lateinit var invoiceDao: InvoiceDao
+    private lateinit var salesRecordInventoryDao: SalesRecordInventoryDao
 
     @Suppress("SpringKotlinAutowiring")
     @Autowired
     private lateinit var invoiceService: InvoiceService
 
+    @Transactional
     override fun insertAfterSalesRecord(
             userId: Long,
             time: Long,
             type: String,
             reason: String?,
-            invoiceId: Long) {
+            invoiceId: Long,
+            inventoryList: List<InvoiceInventory>) {
         @Suppress("NAME_SHADOWING")
         val time = ParseUtil.parseAs<LocalDateTime>(time.toString())
         @Suppress("NAME_SHADOWING")
@@ -44,31 +48,41 @@ class SalesRecordServiceImpl : SalesRecordService {
         // For purchase records, insertPurchaseRecord() should be invoked instead
         if (type == SalesRecordTypeEnum.PURCHASE)
             throw IncorrectItemTypeException("Incorrect method to be invoked for purchase records.")
-        val rowsAffected = salesRecordDao.insert(userId, time, type, reason, invoiceId)
-        if (rowsAffected == 0)
-            throw InsertionFailedException()
+
+        try {
+            // Insert the after sales record first
+            salesRecordDao.insert(userId, time, type, reason, invoiceId)
+            // Insert the inventory list
+            salesRecordInventoryDao.insert(userId, time, inventoryList)
+        } catch (e: DuplicateKeyException) {
+            e.printStackTrace()
+            throw InsertionFailedException(e.mostSpecificCause.message)
+        } catch (e: DataIntegrityViolationException) {
+            e.printStackTrace()
+            throw InsertionFailedException(e.mostSpecificCause.message)
+        }
     }
 
-    @Transactional
     override fun insertPurchaseRecord(
             userId: Long,
             time: Long,
             invoiceId: Long
     ) {
-//        // Insert the invoice first (exceptions are thrown during this process if there are any)
-//        invoiceService.insert(time, invoice.memberId, invoice.totalPrice, invoice.discountedPrice, invoice.inventoryList!!)
-//        invoice.id = invoiceDao.selectLastInsertId()
-
         // Insert the purchase record
         @Suppress("NAME_SHADOWING")
         val time = ParseUtil.parseAs<LocalDateTime>(time.toString())
 
         val type = SalesRecordTypeEnum.PURCHASE
         val reason = null
-//        val rowsAffected = salesRecordDao.insert(userId, time, type, reason, invoice.id)
-        val rowsAffected = salesRecordDao.insert(userId, time, type, reason, invoiceId)
-        if (rowsAffected == 0)
-            throw InsertionFailedException()
+        try {
+            salesRecordDao.insert(userId, time, type, reason, invoiceId)
+        } catch (e: DuplicateKeyException) {
+            e.printStackTrace()
+            throw InsertionFailedException(e.mostSpecificCause.message)
+        } catch (e: DataIntegrityViolationException) {
+            e.printStackTrace()
+            throw InsertionFailedException(e.mostSpecificCause.message)
+        }
     }
 
     @Transactional
@@ -77,9 +91,14 @@ class SalesRecordServiceImpl : SalesRecordService {
         val time = ParseUtil.parseAs<LocalDateTime>(time.toString())
         val salesRecordHelper = salesRecordDao.queryByPk(userId, time) ?:
                 throw NoItemFoundException()
-        val invoiceHelper = invoiceService.getInvoiceByPk(salesRecordHelper.invoiceId)
         @Suppress("UnnecessaryVariable")
-        val salesRecord = SalesRecord(salesRecordHelper, invoiceHelper)
+        val salesRecord = if (salesRecordHelper.type == SalesRecordTypeEnum.PURCHASE) {
+            val invoiceHelper = invoiceService.getInvoiceByPk(salesRecordHelper.invoiceId)
+            SalesRecord(salesRecordHelper, invoiceHelper)
+        } else {
+            val inventoryList = salesRecordInventoryDao.queryInvoiceInventoryList(userId, time)
+            SalesRecord(salesRecordHelper, inventoryList)
+        }
         return salesRecord
     }
 
@@ -102,10 +121,16 @@ class SalesRecordServiceImpl : SalesRecordService {
         // Assemble sales records with their corresponding invoice helpers
         @Suppress("UnnecessaryVariable")
         val salesRecords = salesRecordHelpers.map {
-            // Get invoice helpers by the invoice IDs in the sales record helpers
-            // Exceptions are thrown during this process if there are any
-            val invoiceHelper = invoiceService.getInvoiceByPk(it.invoiceId)
-            SalesRecord(it, invoiceHelper)
+            if (it.type == SalesRecordTypeEnum.PURCHASE) {
+                // Get invoice helpers by the invoice IDs in the sales record helpers
+                // Exceptions are thrown during this process if there are any
+                val invoiceHelper = invoiceService.getInvoiceByPk(it.invoiceId)
+                SalesRecord(it, invoiceHelper)
+            } else {
+                // Get the invoice inventory list by the primary keys of the sales record helpers
+                val inventoryList = salesRecordInventoryDao.queryInvoiceInventoryList(it.userId, it.time)
+                SalesRecord(it, inventoryList)
+            }
         }
         return salesRecords
     }

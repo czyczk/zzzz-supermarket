@@ -4,6 +4,7 @@ import com.zzzz.exception.IncorrectItemTypeException
 import com.zzzz.exception.InsertionFailedException
 import com.zzzz.exception.NoItemFoundException
 import com.zzzz.model.Invoice
+import com.zzzz.model.InvoiceInventory
 import com.zzzz.model.SalesRecord
 
 interface SalesRecordService {
@@ -13,7 +14,8 @@ interface SalesRecordService {
             time: Long,
             type: String,
             reason: String?,
-            invoiceId: Long
+            invoiceId: Long,
+            inventoryList: List<InvoiceInventory>
     )
 
     @Throws(InsertionFailedException::class, IncorrectItemTypeException::class)

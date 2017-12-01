@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzzz.dao.SalesRecordInventoryDao">
+    <insert id="insert">
+        INSERT INTO `sales_record-inventory`(user_id, time, barcode, production_date, qty)
+        VALUES
+            <foreach collection="inventoryList" item="it"
+                     open="(" separator="),(" close=")">
+                #{userId}, #{time}, #{it.barcode}, #{it.productionDate}, #{it.qty}
+            </foreach>
+    </insert>
+
+    <select id="queryInvoiceInventoryList" resultType="InvoiceInventory">
+        SELECT barcode, production_date, qty,
+               name, price 'unitPrice', price * qty 'cost'
+        FROM `sales_record-inventory` JOIN product USING(barcode)
+        WHERE user_id = #{userId} AND time = #{time}
+    </select>
+</mapper>

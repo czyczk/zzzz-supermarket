@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zzzz.dao.SalesRecordDao">
     <insert id="insert">
-        INSERT IGNORE INTO Sales_Record(user_id, time, type, reason, invoice_id)
+        INSERT INTO Sales_Record(user_id, time, type, reason, invoice_id)
         VALUE(#{userId}, #{time}, #{type}, #{reason}, #{invoiceId})
     </insert>
 

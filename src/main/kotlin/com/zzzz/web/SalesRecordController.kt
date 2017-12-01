@@ -4,34 +4,27 @@ import com.zzzz.dto.ExecutionResult
 import com.zzzz.exception.IncorrectItemTypeException
 import com.zzzz.exception.InsertionFailedException
 import com.zzzz.exception.NoItemFoundException
-import com.zzzz.model.Invoice
+import com.zzzz.model.InvoiceInventory
 import com.zzzz.model.SalesRecord
 import com.zzzz.service.SalesRecordService
+import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
+import kotlin.properties.Delegates
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/sales-record")
 class SalesRecordController {
     @Autowired
     private lateinit var salesRecordService: SalesRecordService
 
-    @RequestMapping(value = "/after-sales-record/creation",
+    @RequestMapping(value = "/after-sales/creation",
             method = arrayOf(RequestMethod.POST),
             produces = arrayOf("application/json;charset=UTF-8"))
-    fun afterSalesRecordCreation(
-            @RequestParam userId: Long,
-            @RequestParam time: Long,
-            @RequestParam type: String,
-            @RequestParam(required = false) reason: String?,
-            @RequestParam invoiceId: Long): ExecutionResult<Any> {
+    fun afterSalesRecordCreation(@RequestBody params: AfterSalesRecordCreationHelper): ExecutionResult<Any> {
         val result: ExecutionResult<Any>
         result = try {
-            salesRecordService.insertAfterSalesRecord(userId, time, type, reason, invoiceId)
+            salesRecordService.insertAfterSalesRecord(params.userId, params.time, params.type, params.reason, params.invoiceId, params.inventoryList)
             ExecutionResult(true)
         } catch (e: InsertionFailedException) {
             e.printStackTrace()
@@ -42,17 +35,22 @@ class SalesRecordController {
         return result
     }
 
-    @RequestMapping(value = "/purchase-record/creation",
+    class AfterSalesRecordCreationHelper {
+        var userId: Long by Delegates.notNull()
+        var time: Long by Delegates.notNull()
+        var type: String by Delegates.notNull()
+        var reason: String? = null
+        var invoiceId: Long by Delegates.notNull()
+        var inventoryList: List<InvoiceInventory> by Delegates.notNull()
+    }
+
+    @RequestMapping(value = "/purchase/creation",
             method = arrayOf(RequestMethod.POST),
             produces = arrayOf("application/json;charset=UTF-8"))
-    fun purchaseRecordCreation(
-            @RequestParam userId: Long,
-            @RequestParam time: Long,
-            @RequestParam invoiceId: Long
-    ): ExecutionResult<Any> {
+    fun purchaseRecordCreation(@RequestBody params: PurchaseRecordCreationHelper): ExecutionResult<Any> {
         val result: ExecutionResult<Any>
         result = try {
-            salesRecordService.insertPurchaseRecord(userId, time, invoiceId)
+            salesRecordService.insertPurchaseRecord(params.userId, params.time, params.invoiceId)
             ExecutionResult(true)
         } catch (e: InsertionFailedException) {
             e.printStackTrace()
@@ -61,6 +59,12 @@ class SalesRecordController {
             ExecutionResult(e)
         }
         return result
+    }
+
+    class PurchaseRecordCreationHelper {
+        var userId: Long by Delegates.notNull()
+        var time: Long by Delegates.notNull()
+        var invoiceId: Long by Delegates.notNull()
     }
 
     @RequestMapping(value = "/{userId}/{time}/detail",

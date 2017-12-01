@@ -3,9 +3,12 @@ package com.zzzz.dao
 import com.zzzz.enum.SalesRecordTypeEnum
 import com.zzzz.model.helper.SalesRecordHelper
 import org.apache.ibatis.annotations.Param
+import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.dao.DuplicateKeyException
 import java.time.LocalDateTime
 
 interface SalesRecordDao {
+    @Throws(DuplicateKeyException::class, DataIntegrityViolationException::class)
     fun insert(
             @Param("userId") userId: Long,
             @Param("time") time: LocalDateTime,

@@ -42,7 +42,7 @@
     </column>
     <column id="27" parent="14" name="difference">
       <Position>3</Position>
-      <DataType>decimal(10)|0</DataType>
+      <DataType>decimal(10,2)|0</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="28" parent="14" name="type">
@@ -144,12 +144,12 @@ production_date</ColNames>
     </column>
     <column id="47" parent="16" name="total_price">
       <Position>4</Position>
-      <DataType>decimal(10) unsigned|0</DataType>
+      <DataType>decimal(10,2) unsigned|0</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="48" parent="16" name="discounted_price">
       <Position>5</Position>
-      <DataType>decimal(10) unsigned|0</DataType>
+      <DataType>decimal(10,2) unsigned|0</DataType>
     </column>
     <index id="49" parent="16" name="fk_member_id">
       <ColNames>member_id</ColNames>
@@ -269,7 +269,7 @@ production_date</RefColNames>
     <column id="71" parent="19" name="price">
       <Position>3</Position>
       <Comment>Unit price</Comment>
-      <DataType>decimal(10) unsigned|0</DataType>
+      <DataType>decimal(10,2) unsigned|0</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="72" parent="19" name="shelf_life">
@@ -310,15 +310,15 @@ production_date</RefColNames>
     </column>
     <column id="80" parent="20" name="discount_reduced_rate">
       <Position>3</Position>
-      <DataType>decimal(10) unsigned|0</DataType>
+      <DataType>decimal(10,2) unsigned|0</DataType>
     </column>
     <column id="81" parent="20" name="coupon_threshold">
       <Position>4</Position>
-      <DataType>decimal(10) unsigned|0</DataType>
+      <DataType>decimal(10,2) unsigned|0</DataType>
     </column>
     <column id="82" parent="20" name="coupon_value">
       <Position>5</Position>
-      <DataType>decimal(10) unsigned|0</DataType>
+      <DataType>decimal(10,2) unsigned|0</DataType>
     </column>
     <index id="83" parent="20" name="idx_is_for_member">
       <ColNames>is_for_member</ColNames>
@@ -403,11 +403,16 @@ time</ColNames>
       <DataType>date|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="101" parent="22" name="fk_sr-inventory_barcode_production_date">
+    <column id="101" parent="22" name="qty">
+      <Position>5</Position>
+      <DataType>smallint(6)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="102" parent="22" name="fk_sr-inventory_barcode_production_date">
       <ColNames>barcode
 production_date</ColNames>
     </index>
-    <key id="102" parent="22" name="PRIMARY">
+    <key id="103" parent="22" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_id
 time
@@ -415,7 +420,7 @@ barcode
 production_date</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="103" parent="22" name="fk_sr-inventory_user_id_time">
+    <foreign-key id="104" parent="22" name="fk_sr-inventory_user_id_time">
       <ColNames>user_id
 time</ColNames>
       <RefSchemaName>zzzz_supermarket</RefSchemaName>
@@ -425,7 +430,7 @@ time</RefColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="104" parent="22" name="fk_sr-inventory_barcode_production_date">
+    <foreign-key id="105" parent="22" name="fk_sr-inventory_barcode_production_date">
       <ColNames>barcode
 production_date</ColNames>
       <RefSchemaName>zzzz_supermarket</RefSchemaName>
@@ -435,81 +440,81 @@ production_date</RefColNames>
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="105" parent="23" name="user_id">
+    <column id="106" parent="23" name="user_id">
       <Position>1</Position>
       <Comment>User ID</Comment>
       <DataType>bigint(20) unsigned|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="106" parent="23" name="username">
+    <column id="107" parent="23" name="username">
       <Position>2</Position>
       <Comment>Username (should be unique)</Comment>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="107" parent="23" name="password">
+    <column id="108" parent="23" name="password">
       <Position>3</Position>
       <Comment>Password</Comment>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="108" parent="23" name="type">
+    <column id="109" parent="23" name="type">
       <Position>4</Position>
       <Comment>Type (among &apos;ADMINISTRATOR&apos;, &apos;CLERK&apos; and &apos;CS_WORKER&apos;</Comment>
       <DataType>enum(&apos;ADMINISTRATOR&apos;, &apos;CLERK&apos;, &apos;CS_WORKER&apos;)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="109" parent="23" name="idx_username">
+    <index id="110" parent="23" name="idx_username">
       <ColNames>username</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="110" parent="23" name="idx_user_id">
+    <index id="111" parent="23" name="idx_user_id">
       <ColNames>user_id</ColNames>
     </index>
-    <key id="111" parent="23" name="PRIMARY">
+    <key id="112" parent="23" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="112" parent="23" name="idx_username">
+    <key id="113" parent="23" name="idx_username">
       <ColNames>username</ColNames>
       <UnderlyingIndexName>idx_username</UnderlyingIndexName>
     </key>
-    <column id="113" parent="24" name="barcode">
+    <column id="114" parent="24" name="barcode">
       <Position>1</Position>
       <Comment>Product barcode</Comment>
       <DataType>bigint(13) unsigned zerofill|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="114" parent="24" name="production_date">
+    <column id="115" parent="24" name="production_date">
       <Position>2</Position>
       <DataType>date|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="115" parent="24" name="manufacturer">
+    <column id="116" parent="24" name="manufacturer">
       <Position>3</Position>
       <Comment>Manufacturer</Comment>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="116" parent="24" name="qty_in_stock">
+    <column id="117" parent="24" name="qty_in_stock">
       <Position>4</Position>
       <Comment>Quantity in stock</Comment>
       <DataType>smallint(5) unsigned|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="117" parent="24" name="qty_on_shelf">
+    <column id="118" parent="24" name="qty_on_shelf">
       <Position>5</Position>
       <Comment>Quantity on shelf</Comment>
       <DataType>smallint(5) unsigned|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="118" parent="24" name="expiration_date">
+    <column id="119" parent="24" name="expiration_date">
       <Position>6</Position>
       <DataType>datetime|0</DataType>
     </column>
-    <column id="119" parent="24" name="shelf_life">
+    <column id="120" parent="24" name="shelf_life">
       <Position>7</Position>
       <Comment>Shelf life in hours</Comment>
       <DataType>smallint(5) unsigned|0</DataType>
