@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2017-11-18 16:47:22
+Date: 2017-12-01 12:34:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `accounting_record`;
 CREATE TABLE `accounting_record` (
   `user_id` bigint(20) unsigned NOT NULL,
   `time` datetime NOT NULL,
-  `difference` decimal(10,0) NOT NULL,
+  `difference` decimal(10,2) NOT NULL,
   `type` enum('PURCHASE','REFUND','STOCK') COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`user_id`,`time`),
   KEY `idx_time` (`time`),
@@ -56,9 +56,10 @@ CREATE TABLE `inventory` (
 -- Records of inventory
 -- ----------------------------
 INSERT INTO `inventory` VALUES ('6903244675147', '2017-05-26', '恒安（芜湖）纸业有限公司', '25', '5');
-INSERT INTO `inventory` VALUES ('6903244675147', '2017-10-28', '沈阳顶益食品有限公司', '25', '10');
+INSERT INTO `inventory` VALUES ('6903244675147', '2017-05-27', '芜湖', '37', '53');
 INSERT INTO `inventory` VALUES ('6911988025555', '2017-02-27', '吉林达利食品有限公司', '9', '6');
 INSERT INTO `inventory` VALUES ('6911988025593', '2017-10-08', '吉林达利食品有限公司', '23', '3');
+INSERT INTO `inventory` VALUES ('6920698493332', '2017-10-28', '沈阳顶益食品有限公司', '25', '10');
 INSERT INTO `inventory` VALUES ('6925303771980', '2017-09-17', '济南统一企业有限公司', '50', '15');
 
 -- ----------------------------
@@ -69,8 +70,8 @@ CREATE TABLE `invoice` (
   `invoice_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `time` datetime NOT NULL,
   `member_id` bigint(20) unsigned DEFAULT NULL,
-  `total_price` decimal(10,0) unsigned NOT NULL,
-  `discounted_price` decimal(10,0) unsigned DEFAULT NULL,
+  `total_price` decimal(10,2) unsigned NOT NULL,
+  `discounted_price` decimal(10,2) unsigned DEFAULT NULL,
   PRIMARY KEY (`invoice_id`),
   KEY `idx_invoice_id` (`invoice_id`),
   KEY `idx_time` (`time`),
@@ -81,7 +82,7 @@ CREATE TABLE `invoice` (
 -- ----------------------------
 -- Records of invoice
 -- ----------------------------
-INSERT INTO `invoice` VALUES ('1', '2017-11-14 18:42:08', null, '10', null);
+INSERT INTO `invoice` VALUES ('1', '2017-11-14 18:42:08', null, '10.00', null);
 
 -- ----------------------------
 -- Table structure for invoice-inventory
@@ -91,6 +92,7 @@ CREATE TABLE `invoice-inventory` (
   `invoice_id` bigint(20) unsigned NOT NULL,
   `barcode` bigint(13) unsigned zerofill NOT NULL,
   `production_date` date NOT NULL,
+  `qty` smallint(6) NOT NULL,
   PRIMARY KEY (`invoice_id`,`barcode`,`production_date`),
   KEY `idx_invoice_id` (`invoice_id`),
   KEY `idx_barcode_production_date` (`barcode`,`production_date`) USING BTREE,
@@ -101,8 +103,8 @@ CREATE TABLE `invoice-inventory` (
 -- ----------------------------
 -- Records of invoice-inventory
 -- ----------------------------
-INSERT INTO `invoice-inventory` VALUES ('1', '6911988025555', '2017-02-27');
-INSERT INTO `invoice-inventory` VALUES ('1', '6911988025593', '2017-10-08');
+INSERT INTO `invoice-inventory` VALUES ('1', '6911988025555', '2017-02-27', '1');
+INSERT INTO `invoice-inventory` VALUES ('1', '6911988025593', '2017-10-08', '1');
 
 -- ----------------------------
 -- Table structure for member
@@ -128,7 +130,7 @@ DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
   `barcode` bigint(13) unsigned zerofill NOT NULL AUTO_INCREMENT COMMENT 'Globally unified barcode',
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Product name',
-  `price` decimal(10,0) unsigned NOT NULL COMMENT 'Unit price',
+  `price` decimal(10,2) unsigned NOT NULL COMMENT 'Unit price',
   `shelf_life` smallint(5) unsigned NOT NULL COMMENT 'Shelf life in hours',
   `is_refundable` bit(1) NOT NULL COMMENT 'Whether the product is refundable. (0 for false, 1 for true)',
   PRIMARY KEY (`barcode`),
@@ -140,11 +142,11 @@ CREATE TABLE `product` (
 -- ----------------------------
 -- Records of product
 -- ----------------------------
-INSERT INTO `product` VALUES ('6903244675147', '心相印茶语 丝享 390张', '3', '25920', '');
-INSERT INTO `product` VALUES ('6911988025555', '豆本豆 纯豆奶 无糖 250mL', '5', '6480', '');
-INSERT INTO `product` VALUES ('6911988025593', '豆本豆 有机豆奶 250mL', '5', '6480', '');
-INSERT INTO `product` VALUES ('6920698493332', '康师傅 金汤虾球面', '5', '4320', '');
-INSERT INTO `product` VALUES ('6925303771980', '统一 酱拌面 贵州豆豉辣酱风味', '6', '4320', '');
+INSERT INTO `product` VALUES ('6903244675147', '心相印茶语 丝享 390张', '3.00', '25920', '');
+INSERT INTO `product` VALUES ('6911988025555', '豆本豆 纯豆奶 无糖 250mL', '5.00', '6480', '');
+INSERT INTO `product` VALUES ('6911988025593', '豆本豆 有机豆奶 250mL', '5.00', '6480', '');
+INSERT INTO `product` VALUES ('6920698493332', '康师傅 金汤虾球面', '5.00', '4320', '');
+INSERT INTO `product` VALUES ('6925303771980', '统一 酱拌面 贵州豆豉辣酱风味', '6.00', '4320', '');
 
 -- ----------------------------
 -- Table structure for promotion
@@ -153,9 +155,9 @@ DROP TABLE IF EXISTS `promotion`;
 CREATE TABLE `promotion` (
   `type` enum('DISCOUNT','COUPON') COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_for_member` bit(1) NOT NULL,
-  `discount_reduced_rate` decimal(10,0) unsigned DEFAULT NULL,
-  `coupon_threshold` decimal(10,0) unsigned DEFAULT NULL,
-  `coupon_value` decimal(10,0) unsigned DEFAULT NULL,
+  `discount_reduced_rate` decimal(10,2) unsigned DEFAULT NULL,
+  `coupon_threshold` decimal(10,2) unsigned DEFAULT NULL,
+  `coupon_value` decimal(10,2) unsigned DEFAULT NULL,
   KEY `idx_type` (`type`),
   KEY `idx_is_for_member` (`is_for_member`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -196,6 +198,7 @@ CREATE TABLE `sales_record-inventory` (
   `time` datetime NOT NULL,
   `barcode` bigint(13) unsigned zerofill NOT NULL,
   `production_date` date NOT NULL,
+  `qty` smallint(6) NOT NULL,
   PRIMARY KEY (`user_id`,`time`,`barcode`,`production_date`),
   KEY `fk_sr-inventory_barcode_production_date` (`barcode`,`production_date`),
   CONSTRAINT `fk_sr-inventory_barcode_production_date` FOREIGN KEY (`barcode`, `production_date`) REFERENCES `inventory` (`barcode`, `production_date`) ON DELETE CASCADE ON UPDATE CASCADE,
