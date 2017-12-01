@@ -16,9 +16,9 @@ class InventoryController {
     @Autowired
     private lateinit var inventoryService: InventoryService
 
-    @RequestMapping(value = "/creation",
-            method = arrayOf(RequestMethod.POST),
-            produces = arrayOf("application/json;charset=UTF-8"))
+    @RequestMapping(value = ["/creation"],
+            method = [(RequestMethod.POST)],
+            produces = ["application/json;charset=UTF-8"])
     fun creation(@RequestBody params: InventoryCreationHelper): ExecutionResult<Any> {
         val result: ExecutionResult<Any>
         result = try {
@@ -31,9 +31,9 @@ class InventoryController {
         return result
     }
 
-    @RequestMapping(value = "/update",
-            method = arrayOf(RequestMethod.POST),
-            produces = arrayOf("application/json;charset=UTF-8"))
+    @RequestMapping(value = ["/update"],
+            method = [(RequestMethod.POST)],
+            produces = ["application/json;charset=UTF-8"])
     fun update(@RequestBody params: InventoryUpdateHelper): ExecutionResult<Any> {
         val result: ExecutionResult<Any>
         result = try {
@@ -46,9 +46,9 @@ class InventoryController {
         return result
     }
 
-    @RequestMapping(value = "/{barcode}/{productionDate}/detail",
-            method = arrayOf(RequestMethod.GET),
-            produces = arrayOf("application/json;charset=UTF-8"))
+    @RequestMapping(value = ["/{barcode}/{productionDate}/detail"],
+            method = [(RequestMethod.GET)],
+            produces = ["application/json;charset=UTF-8"])
     fun detail(@PathVariable barcode: Long,
                @PathVariable productionDate: Long): ExecutionResult<Inventory> {
         val result: ExecutionResult<Inventory>
@@ -61,9 +61,9 @@ class InventoryController {
         return result
     }
 
-    @RequestMapping(value = "/list",
-            method = arrayOf(RequestMethod.GET),
-            produces = arrayOf("application/json;charset=UTF-8"))
+    @RequestMapping(value = ["/list"],
+            method = [(RequestMethod.GET)],
+            produces = ["application/json;charset=UTF-8"])
     fun list(@RequestParam(required = false) barcode: Long?,
              @RequestParam(required = false) minProductionDate: Long?,
              @RequestParam(required = false) maxProductionDate: Long?,

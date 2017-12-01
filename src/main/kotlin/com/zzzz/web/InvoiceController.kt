@@ -18,9 +18,9 @@ class InvoiceController {
     @Autowired
     private lateinit var invoiceService: InvoiceService
 
-    @RequestMapping(value = "/creation",
-            method = arrayOf(RequestMethod.POST),
-            produces = arrayOf("application/json;charset=UTF-8"))
+    @RequestMapping(value = ["/creation"],
+            method = [(RequestMethod.POST)],
+            produces = ["application/json;charset=UTF-8"])
     fun creation(@RequestBody params: InvoiceCreationHelper): ExecutionResult<Long> {
         val result: ExecutionResult<Long>
         result = try {
@@ -41,9 +41,9 @@ class InvoiceController {
         var inventoryList: List<InvoiceInventory> by Delegates.notNull()
     }
 
-    @RequestMapping(value = "/{id}/detail",
-            method = arrayOf(RequestMethod.GET),
-            produces = arrayOf("application/json;charset=UTF-8"))
+    @RequestMapping(value = ["/{id}/detail"],
+            method = [(RequestMethod.GET)],
+            produces = ["application/json;charset=UTF-8"])
     fun detail(@PathVariable id: Long): ExecutionResult<Invoice> {
         val result: ExecutionResult<Invoice>
         result = try {
@@ -55,9 +55,9 @@ class InvoiceController {
         return result
     }
 
-    @RequestMapping(value = "/list",
-            method = arrayOf(RequestMethod.GET),
-            produces = arrayOf("application/json;charset=UTF-8"))
+    @RequestMapping(value = ["/list"],
+            method = [(RequestMethod.GET)],
+            produces = ["application/json;charset=UTF-8"])
     fun list(
             @RequestParam id: Long?,
             @RequestParam minTime: Long?, @RequestParam maxTime: Long?,

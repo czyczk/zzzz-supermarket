@@ -7,7 +7,6 @@ import com.zzzz.exception.NoItemFoundException
 import com.zzzz.model.InvoiceInventory
 import com.zzzz.model.SalesRecord
 import com.zzzz.service.SalesRecordService
-import org.jetbrains.annotations.NotNull
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import kotlin.properties.Delegates
@@ -18,9 +17,9 @@ class SalesRecordController {
     @Autowired
     private lateinit var salesRecordService: SalesRecordService
 
-    @RequestMapping(value = "/after-sales/creation",
-            method = arrayOf(RequestMethod.POST),
-            produces = arrayOf("application/json;charset=UTF-8"))
+    @RequestMapping(value = ["/after-sales/creation"],
+            method = [(RequestMethod.POST)],
+            produces = ["application/json;charset=UTF-8"])
     fun afterSalesRecordCreation(@RequestBody params: AfterSalesRecordCreationHelper): ExecutionResult<Any> {
         val result: ExecutionResult<Any>
         result = try {
@@ -44,9 +43,9 @@ class SalesRecordController {
         var inventoryList: List<InvoiceInventory> by Delegates.notNull()
     }
 
-    @RequestMapping(value = "/purchase/creation",
-            method = arrayOf(RequestMethod.POST),
-            produces = arrayOf("application/json;charset=UTF-8"))
+    @RequestMapping(value = ["/purchase/creation"],
+            method = [(RequestMethod.POST)],
+            produces = ["application/json;charset=UTF-8"])
     fun purchaseRecordCreation(@RequestBody params: PurchaseRecordCreationHelper): ExecutionResult<Any> {
         val result: ExecutionResult<Any>
         result = try {
@@ -67,9 +66,9 @@ class SalesRecordController {
         var invoiceId: Long by Delegates.notNull()
     }
 
-    @RequestMapping(value = "/{userId}/{time}/detail",
-            method = arrayOf(RequestMethod.GET),
-            produces = arrayOf("application/json;charset=UTF-8"))
+    @RequestMapping(value = ["/{userId}/{time}/detail"],
+            method = [(RequestMethod.GET)],
+            produces = ["application/json;charset=UTF-8"])
     fun detail(@PathVariable userId: Long,
                @PathVariable time: Long): ExecutionResult<SalesRecord> {
         val result: ExecutionResult<SalesRecord>
@@ -82,9 +81,9 @@ class SalesRecordController {
         return result
     }
 
-    @RequestMapping(value = "/list",
-            method = arrayOf(RequestMethod.GET),
-            produces = arrayOf("application/json;charset=UTF-8"))
+    @RequestMapping(value = ["/list"],
+            method = [(RequestMethod.GET)],
+            produces = ["application/json;charset=UTF-8"])
     fun list(
             @RequestParam(required = false) userId: Long?,
             @RequestParam(required = false) minTime: Long?, @RequestParam(required = false) maxTime: Long?,
