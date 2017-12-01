@@ -19,7 +19,6 @@ class InvoiceController {
     @Autowired
     private lateinit var invoiceService: InvoiceService
 
-    // TODO The way to pass inventory lists unchecked
     @RequestMapping(value = "/creation",
             method = arrayOf(RequestMethod.POST),
             produces = arrayOf("application/json;charset=UTF-8"))
